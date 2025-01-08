@@ -4,209 +4,249 @@
         <Taskbar />
         <!-- Main Content Section -->
         <div class="table-container w-100 p-5 d-flex flex-column gap-5">
-            <div class="">
-                <h3>Users</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in users_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users">
-                            <td>{{user.id}}</td>
-                            <td>{{user.user_role}}</td>
-                            <td>{{user.first_name}}</td>
-                            <td>{{user.last_name}}</td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.phone_number}}</td>
-                            <td>{{user.street_name}}</td>
-                            <td>{{user.house_number}}</td>
-                            <td>{{user.city}}</td>
-                            <td>{{user.zipcode}}</td>
-                            <td>{{user.subscription}}</td>
-                            <td>{{user.created_at}}</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="">
-                <h3>Products</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in products_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="product in products">
-                            <td>{{product.id}}</td>
-                            <td>{{product.name}}</td>
-                            
-                            <td>
-                                <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
-                            </td>
-                            <td>
-                                <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" />
-                            </td>
-                            <td>{{product.roast_type}}</td>
-                            <td>{{product.origin}}</td>
-                            <td>{{product.description}}</td>
-                            <td>{{product.data}}</td>
-                            <td>{{product.information}}</td>
-                            <td>{{product.information}}</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="">
-                <h3>Product variants</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in product_variants_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="product_variant in product_variants">
-                            <td>{{product_variant.id}}</td>
-                            <td>{{product_variant.product_variant_name}}</td>
-                            <td>{{product_variant.weight}} gram</td>
-                            <td>€{{product_variant.price}},-</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="">
-                <h3>Roles</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in roles_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="role in roles">
-                            <td>{{role.id}}</td>
-                            <td>{{role.name}}</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="">
-                <h3>Api keys</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in api_keys_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="api_key in api_keys">
-                            <td>{{api_key.id}}</td>
-                            <td>{{api_key.provider}}</td>
-                            <td>{{api_key.public_key}}</td>
-                            <td>{{api_key.secret_key}}</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="">
-                <h3>Carts</h3>
-                <table class="w-100 table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th v-for="(title, index) in carts_header" :key="index">
-                                {{ title }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="cart in carts">
-                            <td>{{cart.id}}</td>
-                            <td>{{cart.cart_user}}</td>
-                            <td>{{cart.cart_product}}</td>
-                            <td>{{cart.variant_id}}</td>
-                            <td>{{cart.quantity}}</td>
-                            <td class="d-flex justify-content-around">
-                                <div class="icon" v-on:click="userAction('read')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('update')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                </div>
-                                <div class="icon" v-on:click="userAction('delete')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="container-fluid d-flex justify-content-center">
+                <div class="col-md-12">
+                    <nav class="">
+                        <div class="nav nav-tabs d-flex column-gap-4 mb-5" id="nav-tab" role="tablist">
+                            <button class="nav-link active fs-5" id="nav-users-tab" data-bs-toggle="tab" data-bs-target="#nav-users" type="button" role="tab" aria-controls="nav-users" aria-selected="false">Users</button>
+                            <button class="nav-link fs-5" id="nav-products-tab" data-bs-toggle="tab" data-bs-target="#nav-products" role="tab" aria-controls="nav-products" aria-selected="true">Products</button>
+                            <button class="nav-link fs-5" id="nav-product-variants-tab" data-bs-toggle="tab" data-bs-target="#nav-product-variants" type="button" role="tab" aria-controls="nav-product-variants" aria-selected="false">Product Variants</button>
+                            <button class="nav-link fs-5" id="nav-roles-tab" data-bs-toggle="tab" data-bs-target="#nav-roles" type="button" role="tab" aria-controls="nav-roles" aria-selected="false">Roles</button>
+                            <button class="nav-link fs-5" id="nav-api-keys-tab" data-bs-toggle="tab" data-bs-target="#nav-api-keys" type="button" role="tab" aria-controls="nav-api-keys" aria-selected="false">Api Keys</button>
+                            <button class="nav-link fs-5" id="nav-carts-tab" data-bs-toggle="tab" data-bs-target="#nav-carts" type="button" role="tab" aria-controls="nav-carts" aria-selected="false">Carts</button>
+                        </div>
+                    </nav>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <!-- Users Table -->
+                        <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
+                            <table v-if="users.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in users_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="user in users">
+                                        <td>{{user.id}}</td>
+                                        <td>{{user.user_role}}</td>
+                                        <td>{{user.first_name}}</td>
+                                        <td>{{user.last_name}}</td>
+                                        <td>{{user.email}}</td>
+                                        <td>{{user.phone_number}}</td>
+                                        <td>{{user.street_name}}</td>
+                                        <td>{{user.house_number}}</td>
+                                        <td>{{user.city}}</td>
+                                        <td>{{user.zipcode}}</td>
+                                        <td>{{user.subscription}}</td>
+                                        <td>{{user.created_at}}</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+
+                        <!-- Products Table -->
+                        <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
+                           <table v-if="products.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in products_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product in products">
+                                        <td>{{product.id}}</td>
+                                        <td>{{product.name}}</td>
+                                        
+                                        <td>
+                                            <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
+                                        </td>
+                                        <td>
+                                            <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" />
+                                        </td>
+                                        <td>{{product.roast_type}}</td>
+                                        <td>{{product.origin}}</td>
+                                        <td>{{product.description}}</td>
+                                        <td>{{product.data}}</td>
+                                        <td>{{product.information}}</td>
+                                        <td>{{product.information}}</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+
+                        <!-- Product Variants Table -->
+                        <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-product-variants-tab">
+                            <table v-if="product_variants.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in product_variants_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="product_variant in product_variants">
+                                        <td>{{product_variant.id}}</td>
+                                        <td>{{product_variant.product_variant_name}}</td>
+                                        <td>{{product_variant.weight}} gram</td>
+                                        <td>€{{product_variant.price}},-</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+
+                        <!-- Roles Table -->
+                        <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab">
+                            <table v-if="roles.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in roles_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="role in roles">
+                                        <td>{{role.id}}</td>
+                                        <td>{{role.name}}</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+
+                        <!-- Api Keys Table -->
+                        <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-api-keys-tab">
+                            <table v-if="api_keys.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in api_keys_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="api_key in api_keys">
+                                        <td>{{api_key.id}}</td>
+                                        <td>{{api_key.provider}}</td>
+                                        <td>{{api_key.public_key}}</td>
+                                        <td>{{api_key.secret_key}}</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+
+                        <!-- Carts Table -->
+                        <div class="tab-pane fade d-flex" id="nav-carts" role="tabpanel" aria-labelledby="nav-carts-tab">
+                            <table v-if="api_keys.length > 0" class="w-100 table table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th v-for="(title, index) in carts_header" :key="index">
+                                            {{ title }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="cart in carts">
+                                        <td>{{cart.id}}</td>
+                                        <td>{{cart.cart_user}}</td>
+                                        <td>{{cart.cart_product}}</td>
+                                        <td>{{cart.variant_id}}</td>
+                                        <td>{{cart.quantity}}</td>
+                                        <td class="d-flex justify-content-around">
+                                            <div class="icon" v-on:click="userAction('read')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('update')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </div>
+                                            <div class="icon" v-on:click="userAction('delete')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h3 v-else>
+                                Loading data...
+                            </h3>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

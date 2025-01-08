@@ -1,10 +1,10 @@
 <template>
-    <div class="row">
-        <div class="col-md-2">
-            <Taskbar />
-        </div>
-        <div class="col-md-10 dashboard">
-            <p>Settings</p>
+    <div class="d-flex vh-100 bg-light">
+        <!-- Taskbar Section -->
+        <Taskbar />
+        <!-- Main Content Section -->
+        <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+            <h3>Settings</h3>
         </div>
     </div>
 </template>
