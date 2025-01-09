@@ -1,25 +1,27 @@
 <template>
     <div class="bg-white d-flex flex-column" style="height: 100vh;">
         <!-- Logo -->
-        <img src="../assets/images/logo_images/logo_dark.png" alt="Logo" style="width: 100%; height: auto; object-fit: cover;" />
+        <div class="d-flex justify-content-center">
+            <img class="logo" src="../assets/images/logo_images/logo_dark.png" alt="Logo" />
+        </div>
         
         <!-- devider -->
         <div class="d-flex justify-content-center"><div class="devider"></div></div>
 
         <!-- Taskbar items -->
         <div class="flex-grow-1">
-            <div v-for="(item, index) in taskbar.slice(0, -2)" :key="index" class="d-flex align-items-center column-gap-3 m-4 p-3 menu-item" style="cursor: pointer;" v-on:click="ChangeRoute(item.route)">
+            <div v-for="(item, index) in taskbar.slice(0, -2)" :key="index" class="d-flex align-items-center column-gap-3 p-3 menu-item spacing" style="cursor: pointer;" v-on:click="ChangeRoute(item.route)">
                 <span v-html="item.icon"></span>
-                <span v-if="item.text" class="fs-5">{{ item.text }}</span>
+                <span v-if="item.text" class="item_text">{{ item.text }}</span>
             </div>
         </div>
 
         <!-- Divider and last two items -->
         <div>
             <div class="d-flex justify-content-center"><div class="devider"></div></div>
-            <div v-for="(item, index) in taskbar.slice(-2)" :key="taskbar.length + index" class="d-flex align-items-center column-gap-3 m-4 p-3 menu-item" style="cursor: pointer;" v-on:click="ChangeRoute(item.route)">
+            <div v-for="(item, index) in taskbar.slice(-2)" :key="taskbar.length + index" class="d-flex align-items-center column-gap-3 p-3 menu-item spacing" style="cursor: pointer;" v-on:click="ChangeRoute(item.route)">
                 <span v-html="item.icon"></span>
-                <span v-if="item.text" class="fs-5">{{ item.text }}</span>
+                <span v-if="item.text" class="item_text">{{ item.text }}</span>
             </div>
         </div>
     </div>
@@ -32,7 +34,7 @@ export default {
         return {
             taskbar: [
                 {
-                    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="black" class="bi bi-house-door" viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/></svg>',
+                    icon: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="26" height="26" fill="black" class="bi bi-house-door" viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/></svg></div>',
                     text: 'Dashboard',
                     route: 'dashboard',
                 },
@@ -99,5 +101,42 @@ export default {
         margin: 15px 0;
         background-color: black;
         width: 80%;
+    }
+
+    .logo {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    .item_text {
+        font-size: 20px;
+    }
+
+    .icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .spacing {
+        margin: 24px;
+    }
+
+    @media only screen and (max-width: 1920px) {
+        .logo {
+            width: 65%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .item_text {
+            font-size: 14px;
+        }
+
+        .spacing {
+            margin: 0px;
+            margin-left: 12px;
+            margin-rights: 12px;
+        }
     }
 </style>

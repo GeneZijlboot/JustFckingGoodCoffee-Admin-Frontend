@@ -105,18 +105,6 @@ body {
     }
 } 
 
-.btn-primary {
-    background-color: rgb(248, 236, 228) !important;
-    border-color: rgb(248, 236, 228) !important;
-    color: rgb(49, 76, 56) !important; /* Ensure text color contrasts with background */
-  }
-  
-  .btn-primary:hover,
-  .btn-primary:focus {
-    background-color: rgb(240, 222, 210) !important; /* Slightly darker for hover */
-    border-color: rgb(240, 222, 210) !important;
-  }
-
 .cart-wrapper {
     position: relative;
     .counter {
@@ -164,46 +152,6 @@ body {
     background-color: transparent;
     color: rgb(49, 76, 56);;
 }
-
-.product-weight-btn.active {
-    background-color: rgb(49, 76, 56); /* Active button background color */
-    color: white; /* Text color for active button */
-}
-
-.product-weight-btn:not(.active) {
-    background-color: transparent;
-    color: rgb(49, 76, 56);
-}
-
-.product-weight-btn:hover {
-    border: 2px solid rgb(49, 76, 56);
-}
-
-.product-to-cart-btn {
-    border: 2px solid rgb(49, 76, 56);
-    border-radius: 15px;
-    padding: 10px 20px;
-    background-color: transparent;
-    color: rgb(49, 76, 56);;
-}
-
-.product-to-cart-btn.active {
-    background-color: transparent;
-    color: rgb(49, 76, 56);
-    border: 2px solid rgb(49, 76, 56);
-}
-
-.product-to-cart-btn:not(.active) {
-    border: 2px solid rgb(49, 76, 56);
-    background-color: rgb(49, 76, 56);
-    color: white;
-}
-
-.product-to-cart-btn:hover {
-    background-color: transparent;
-    color: rgb(49, 76, 56);
-}
-
 .cart-product {
     background-color: rgb(234, 223, 216);
 }

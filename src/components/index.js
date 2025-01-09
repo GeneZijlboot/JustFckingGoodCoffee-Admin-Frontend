@@ -11,7 +11,6 @@ import Database from '../components/Database.vue';
 import Analytics from '../components/Analytics.vue';
 import Mollie from '../components/Mollie.vue';
 import Sendcloud from '../components/Sendcloud.vue';
-import Moneybird from '../components/Moneybird.vue';
 import Account from '../components/Account.vue';
 import Settings from '../components/Settings.vue';
 
@@ -62,11 +61,6 @@ const router = createRouter({
       name: 'Sendcloud',
       component: Sendcloud,
     },
-    {
-      path: '/page/moneybird',
-      name: 'Moneybird',
-      component: Moneybird,
-    },,
     {
       path: '/page/account',
       name: 'Account',

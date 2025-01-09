@@ -4,7 +4,7 @@
         <Taskbar />
         <!-- Main Content Section -->
         <div class="flex-grow-1 d-flex justify-content-center align-items-center">
-            <h3>Settings</h3>
+            <h3>Work in Progress</h3>
         </div>
     </div>
 </template>
@@ -18,4 +18,4 @@ import Taskbar from './Taskbar.vue';
     }
 </script>
 <style scoped>
-</style>ç
+</style>

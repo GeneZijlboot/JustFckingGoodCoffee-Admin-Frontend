@@ -26,6 +26,9 @@ export default {
         case '/page/account':
         case '/page/database':
         case '/page/analytics':
+        case '/page/mollie':
+        case '/page/sendcloud':
+        case '/page/moneybird':
         case '/page/settings':
         case '/page/dashboard':
         case (route.path.startsWith('/page/product/') ? route.path : null):
