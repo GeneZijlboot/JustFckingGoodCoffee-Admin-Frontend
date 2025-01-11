@@ -158,7 +158,7 @@
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th v-for="title in api_keys_header">
+                                            <th v-for="title in apikeys_header">
                                                 {{ title }}
                                             </th>
                                         </tr>
@@ -290,7 +290,7 @@
             },
 
             //user table crud CrudActions
-            dynCrudAction(action, controller, id) {
+            dynamicCrudAction(action, controller, id) {
                 const data = {
                     id: id
                 }
