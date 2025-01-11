@@ -107,7 +107,7 @@
         <div v-if="modelValue == 'Product'">
             <p>Porducts create</p>
             <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                <button class="btn btn-primary" type="button">Create User</button>
+                <button class="btn btn-primary" type="button">Create Product</button>
                 <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
             </div>
         </div>
@@ -116,7 +116,7 @@
         <div v-if="modelValue == 'ProductVariant'">
             <p>ProductVariant create</p>
             <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                <button class="btn btn-primary" type="button">Create User</button>
+                <button class="btn btn-primary" type="button">Create Product Variant</button>
                 <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
             </div>
         </div>
@@ -142,8 +142,8 @@
             <div class="row mb-4">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label for="role" class="form-label">name*</label>
-                        <input type="text" class="p-2 form-control" id="public_key" placeholder="Enter provider name" v-model="public_key" required />
+                        <label for="provider" class="form-label">provider</label>
+                        <input type="text" class="p-2 form-control" id="provider" placeholder="Enter provider name" v-model="provider" required />
                     </div>
                 </div>
             </div>
@@ -156,13 +156,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="last_name" class="form-label">Private Key</label>
-                        <input type="text" class="p-2 form-control" id="last_name" placeholder="Enter private key" v-model="last_name" required />
+                        <label for="secret_key" class="form-label">Secret Key</label>
+                        <input type="text" class="p-2 form-control" id="secret_key" placeholder="Enter private key" v-model="secret_key" required />
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                <button class="btn btn-primary" type="button">Create Role</button>
+                <button class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create ApiKey</button>
                 <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
             </div>
         </div>
@@ -209,7 +209,7 @@
                 //API KEY
                 provider: null,
                 public_key: null,
-                privte_key: null, 
+                secret_key: null, 
 
             }
         },
@@ -260,7 +260,8 @@
                 if (Object.values(data).every(value => value !== null && value !== undefined && value !== '')) {
                     this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
                         if (res.status) {
-                           this.cancelCreateScreen();
+                            this.cancelCreateScreen();
+                            this.$emit('row-created', controller); //get the table again when succesfully inserted new row
                         }
 
                         Swal.fire({ //show correct data for true or false

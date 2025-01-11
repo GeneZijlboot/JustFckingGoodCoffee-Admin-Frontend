@@ -212,7 +212,7 @@
                 </div>
             </div>
         </div>
-        <CreateComponent v-if="showPage" v-model="showPage" @cancel="handleCancel"/>
+        <CreateComponent v-if="showPage" v-model="showPage" @cancel="handleCancel" @row-created="handleRowCreated"/>
     </div>
 </template>
 <script>
@@ -316,8 +316,7 @@
                             // User clicked 'Yes', perform the deletion dynamicCrudAction
                             this.req('POST', '/' + controller + '/delete' + controller, data).then((res) => {
                                 if (res.status) {
-                                    this.get + controller + s();
-                                    this.getUsers(); //reload users adter delete
+                                    this.dynamiclyGetTable(controller); //reload users adter delete
                                     Swal.fire({
                                         title: 'Success!',
                                         text: 'You have successfully logged in.',
@@ -335,11 +334,16 @@
             handleCancel() {
                 this.showDatabase = true; // Show the database again
                 this.showPage = false; // Hide the create component
+            },
+            
+            handleRowCreated(controller) {
+                // Call dynamiclyGetTable to reload the data
+                this.dynamiclyGetTable(controller);
             }
         },
 
+        //loop through controllers and get its data table
         mounted() {
-            //loop through controllers and get its data table
             this.controllers.forEach(controller => {
                 this.dynamiclyGetTable(controller);
             });
