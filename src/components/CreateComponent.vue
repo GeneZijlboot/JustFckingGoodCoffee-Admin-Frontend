@@ -7,6 +7,7 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center">
                         <h3>Personal Information</h3>
+                        <span class="text-secondary">(required)</span>
                     </div>
                     <div class="row my-4">
                         <div class="col-md-6">
@@ -23,16 +24,10 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="email" class="form-label">Email*</label>
+                                 <label for="email" class="form-label">Email*</label>
                                 <input type="text" class="p-2 form-control" id="email" placeholder="Enter email" v-model="email" required />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="phone_number" class="form-label">Phone number</label>
-                                <input type="text" class="p-2 form-control" id="phone_number" placeholder="Enter phone number" v-model="phone_number" />
                             </div>
                         </div>
                     </div>
@@ -64,6 +59,7 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center">
                         <h3>Billing Information</h3>
+                        <span class="text-secondary">(optional)</span>
                     </div>
                     <div class="row my-4">
                         <div class="col-md-6">
@@ -79,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="street_name" class="form-label">Street name</label>
@@ -90,6 +86,14 @@
                             <div class="form-group">
                                 <label for="house_number" class="form-label">House number</label>
                                 <input type="text" class="p-2 form-control" id="house_number" placeholder="Enter house number" v-model="house_number" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="phone_number" class="form-label">Phone number</label>
+                                <input type="text" class="p-2 form-control" id="phone_number" placeholder="Enter phone number" v-model="phone_number" />
                             </div>
                         </div>
                     </div>
