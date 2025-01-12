@@ -250,7 +250,7 @@
                 
                 //api keys data
                 apikeys: [],
-                api_keys_header: [],
+                apikeys_header: [],
 
                 //cart data
                 carts: [],

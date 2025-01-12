@@ -7,7 +7,6 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center">
                         <h3>Personal Information</h3>
-                        <span class="text-secondary">&nbsp;(required)</span>
                     </div>
                     <div class="row my-4">
                         <div class="col-md-6">
@@ -38,14 +37,6 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="role" class="form-label">Role*</label>
-                                <multiselect v-model="role" :options="role_options"></multiselect>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="password" class="form-label">Password*</label>
@@ -54,8 +45,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="confirm_password" class="form-label">Confirm password</label>
-                                <input type="password" class="p-2 form-control" id="confirm_password" placeholder="Confirm password" v-model="confirm_password" />
+                                <label for="password_confirm" class="form-label">Confirm password*</label>
+                                <input type="password" class="p-2 form-control" id="password_confirm" placeholder="Confirm password" v-model="password_confirm" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="role" class="form-label">Role*</label>
+                                <multiselect v-model="user_role_id" track-by="name" label="name" placeholder="Select a role" :options="roleOptions" :searchable="false" :allow-empty="false"><template v-slot:singleLabel="{ option }">{{ option.name }}</template></multiselect>
                             </div>
                         </div>
                     </div>
@@ -65,7 +64,6 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center">
                         <h3>Billing Information</h3>
-                        <span class="text-secondary">&nbsp;(optional)</span>
                     </div>
                     <div class="row my-4">
                         <div class="col-md-6">
@@ -85,13 +83,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="street_name" class="form-label">Street name</label>
-                                <input type="text" class="p-2 form-control" id="street_name" placeholder="Enter street name" v-model="street_name" required />
+                                <input type="text" class="p-2 form-control" id="street_name" placeholder="Enter street name" v-model="street_name" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="house_number" class="form-label">House number</label>
-                                <input type="text" class="p-2 form-control" id="house_number" placeholder="Enter house number" required />
+                                <input type="text" class="p-2 form-control" id="house_number" placeholder="Enter house number" v-model="house_number" />
                             </div>
                         </div>
                     </div>
@@ -171,6 +169,7 @@
 <script>
     import Taskbar from './Taskbar.vue';
     import Multiselect from 'vue-multiselect';
+    import 'vue-multiselect/dist/vue-multiselect.min.css';
     import Swal from 'sweetalert2';
     
     export default {
@@ -197,13 +196,15 @@
                 zipcode: null,
                 street_name: null,
                 house_number: null,
+                password: null,
+                password_confirm: null,
 
                 //PRODUCTS
 
                 //PRODUCT VARIANTS
 
                 //ROLES
-                role_name: null,
+                user_role_id: null,
                 role_options: ['1 - admin', '2 - customer'],
 
                 //API KEY
@@ -211,6 +212,8 @@
                 public_key: null,
                 secret_key: null, 
 
+                roleValue: null,
+                roleOptions: [],
             }
         },
 
@@ -229,12 +232,16 @@
                         first_name: this.first_name,
                         last_name: this.last_name,
                         email: this.email,
-                        phone_number: this.phone_number,
-                        city: this.city,
-                        zipcode: this.zipcode,
-                        street_name: this.street_name,
-                        house_number: this.house_number,
+                        password: this.password,
+                        password_confirm: this.password_confirm,
+                        user_role_id: this.user_role_id.id,
                     };
+
+                    if (this.city) data.city = this.city;
+                    if (this.zipcode) data.zipcode = this.zipcode;
+                    if (this.phone_number) data.phone_number = this.phone_number;
+                    if (this.house_number) data.house_number = this.house_number;
+                    if (this.street_name) data.street_name = this.street_name;
                 } else if (controller == 'Product') {
                     data = { //define data fields by Product
 
@@ -254,7 +261,6 @@
                         public_key: this.public_key
                     };
                 }
-
                 
                 //check if data fields are defined
                 if (Object.values(data).every(value => value !== null && value !== undefined && value !== '')) {
@@ -279,10 +285,21 @@
                 }
             },
 
-            //dynamicly get options
-            dynamiclyGetOptions() {
-
+            dynamiclyGetOptions(controller) {
+                this.req('Get', '/' + controller + '/getOptions').then((res) => {
+                    if (res.status) {
+                        res.data.forEach(role => {
+                            this.roleOptions.push(role);
+                        });
+                    }
+                })
             }
         },
+
+        mounted() {
+            if (this.modelValue == 'User') { //get Role options to create a User
+                this.dynamiclyGetOptions('Role');
+            }
+        }
     }
 </script>
