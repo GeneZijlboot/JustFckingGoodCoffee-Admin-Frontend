@@ -13,6 +13,7 @@
                             <button class="nav-link fs-5" id="nav-product-variants-tab" data-bs-toggle="tab" data-bs-target="#nav-product-variants" type="button" role="tab" aria-controls="nav-product-variants" aria-selected="false">Product Variants</button>
                             <button class="nav-link fs-5" id="nav-roles-tab" data-bs-toggle="tab" data-bs-target="#nav-roles" type="button" role="tab" aria-controls="nav-roles" aria-selected="false">Roles</button>
                             <button class="nav-link fs-5" id="nav-api-keys-tab" data-bs-toggle="tab" data-bs-target="#nav-api-keys" type="button" role="tab" aria-controls="nav-api-keys" aria-selected="false">Api Keys</button>
+                            <button class="nav-link fs-5" id="nav-messages-tab" data-bs-toggle="tab" data-bs-target="#nav-messages" type="button" role="tab" aria-controls="nav-messages" aria-selected="false">Messages</button>
                             <button class="nav-link fs-5" id="nav-carts-tab" data-bs-toggle="tab" data-bs-target="#nav-carts" type="button" role="tab" aria-controls="nav-carts" aria-selected="false">Carts</button>
                         </div>
                     </nav>
@@ -180,6 +181,35 @@
                             </div>
                         </div>
 
+                        <!-- Message Table -->
+                        <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-messages-tab">
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller)">Create messages</button>
+                            <div class="table-responsive">
+                                <table class="w-100 table table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th v-for="title in messages_header">
+                                                {{ title }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr v-for="message in messages">
+                                            <td>{{message.id}}</td>
+                                            <td>{{message.language}}</td>
+                                            <td>{{message.name}}</td>
+                                            <td>{{message.message}}</td>
+                                            <td class="px-4" style="border-left: 1px solid lightgray;">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('R', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                                <svg class="icon" v-on:click="dynamicCrudAction('D', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                         <!-- Carts Table -->
                         <div class="tab-pane fade d-flex" id="nav-carts" role="tabpanel" aria-labelledby="nav-carts-tab">
                             <div class="table-responsive">
@@ -256,6 +286,10 @@
                 carts: [],
                 carts_header: [],
 
+                //message data
+                messages: [],
+                messages_header: [],
+
                 //controllers
                 controllers: [
                     'User',
@@ -263,7 +297,8 @@
                     'ProductVariant',
                     'Product',
                     'Cart',
-                    'ApiKey'
+                    'ApiKey',
+                    'Message'
                 ],
             }
         },

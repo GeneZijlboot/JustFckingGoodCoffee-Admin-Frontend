@@ -4,16 +4,14 @@ import App from '../App.vue';
 
 //importing Authentication components
 import Login from '../components/Login.vue';
-import ForgotPassword from '../components/ForgotPassword.vue';
-import ResetPassword from '../components/ResetPassword.vue';
 import Dashboard from '../components/Dashboard.vue';
 import Database from '../components/Database.vue';
-import Analytics from '../components/Analytics.vue';
-import Mollie from '../components/Mollie.vue';
-import Sendcloud from '../components/Sendcloud.vue';
-import Moneybird from '../components/Moneybird.vue';
+// import Analytics from '../components/Analytics.vue';
+// import Mollie from '../components/Mollie.vue';
+// import Sendcloud from '../components/Sendcloud.vue';
+// import Moneybird from '../components/Moneybird.vue';
 import Account from '../components/Account.vue';
-import Settings from '../components/Settings.vue';
+// import Settings from '../components/Settings.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -33,50 +31,40 @@ const router = createRouter({
       component: Dashboard,
     },
     {
-      path: '/page/reset_password/:token',
-      name: 'ResetPassword',
-      component: ResetPassword,
-    },
-    {
-      path: '/page/forgot_password',
-      name: 'ForgotPassword',
-      component: ForgotPassword,
-    },
-    {
       path: '/page/database',
       name: 'Database',
       component: Database,
     },
-    {
-      path: '/page/analytics',
-      name: 'Analytics',
-      component: Analytics,
-    },
-    {
-      path: '/page/mollie',
-      name: 'Mollie',
-      component: Mollie,
-    },
-    {
-      path: '/page/sendcloud',
-      name: 'Sendcloud',
-      component: Sendcloud,
-    },
-    {
-      path: '/page/moneybird',
-      name: 'Moneybird',
-      component: Moneybird,
-    },,
+    // {
+    //   path: '/page/analytics',
+    //   name: 'Analytics',
+    //   component: Analytics,
+    // },
+    // {
+    //   path: '/page/mollie',
+    //   name: 'Mollie',
+    //   component: Mollie,
+    // },
+    // {
+    //   path: '/page/sendcloud',
+    //   name: 'Sendcloud',
+    //   component: Sendcloud,
+    // },
+    // {
+    //   path: '/page/moneybird',
+    //   name: 'Moneybird',
+    //   component: Moneybird,
+    // },
     {
       path: '/page/account',
       name: 'Account',
       component: Account,
     },
-    {
-      path: '/page/settings',
-      name: 'Settings',
-      component: Settings,
-    }
+    // {
+    //   path: '/page/settings',
+    //   name: 'Settings',
+    //   component: Settings,
+    // }
   ]
 });
 
