@@ -385,14 +385,12 @@
 
                 //PRODUCTS
                 product_name: null,
-                productImageUrl: '',
+                productImageUrl: null,
                 productImageFile: null,
-                infobarImageUrl: '',
+                infobarImageUrl: null,
                 infobarImageFile: null,
                 roast_type: null,
                 origin: null,
-
-                //PRODUCT VARIANTS
                 product_description: null,
                 product_data: null,
                 product_information: null,
@@ -415,19 +413,22 @@
         },
 
         methods: {
+            //handle on file upload
             onFileChange(event, typeFile, typeUrl) {
                 const file = event.target.files[0];
 
                 if (file) {
-                    this[typeFile] = file; // Store the file in the productImageFile variable
-                    this[typeUrl] = URL.createObjectURL(file); // Generate a temporary URL for preview
+                    this[typeFile] = file; //store the file in the productImageFile variable
+                    this[typeUrl] = URL.createObjectURL(file); //generate a temporary URL for preview
                 }
             },
 
+            //open product image in fullscreen
             productImageFullscreen(typeUrl) {
                 window.open(typeUrl, "_blank");
             },
 
+            //remove added image
             removeImage(typeFile, typeUrl) {
                 this[typeFile] = null;
                 this[typeUrl] = '';
@@ -435,118 +436,126 @@
 
             //cancle create screen, go back to database tabs
             cancelCreateScreen() {
-                this.$emit('cancel'); // Emit a cancel event
+                this.$emit('cancel');
             },
 
-            // Helper function to get data for specific controllers
-            getDataByController(controller) {
+            dynamiclyCreateTableRow(controller) {
+                //define empty data
+                let data = {};
+                let product_image_data = {};
+
+                //define data first
                 switch (controller) {
                     case 'User':
-                        return {
+                        //define data for User
+                        data = {
+                            //required fields:
                             first_name: this.first_name,
                             last_name: this.last_name,
                             email: this.email,
                             password: this.password,
                             password_confirm: this.password_confirm,
-                            user_role_id: this.user_role_id?.id,
-                            city: this.city || null,
-                            zipcode: this.zipcode || null,
-                            phone_number: this.phone_number || null,
-                            house_number: this.house_number || null,
-                            street_name: this.street_name || null,
+                            user_role_id: this.user_role_id.id, 
+
+                            //optional fields
+                            city: this.city || '',
+                            zipcode: this.zipcode || '',
+                            phone_number: this.phone_number || '',
+                            house_number: this.house_number || '',
+                            street_name: this.street_name || '',
                         };
+                        break;
+
                     case 'Product':
-                        return {
-                            name: this.product_name,
-                            image_url: this.productImageFile?.name,
-                            infobar_image_url: this.infobarImageFile?.name,
+                        //define data for Product
+                        data = {
+                            product_name: this.product_name,
+                            product_image_url: this.productImageUrl,
+                            infobar_image_url: this.infobarImageUrl,
                             roast_type: this.roast_type,
                             origin: this.origin,
-                            description: this.product_description,
-                            data: this.product_data,
-                            information: this.product_information,
-                            language: this.selectedLanguage,
+                            product_description: this.product_description,
+                            product_data: this.product_data,
+                            product_information: this.product_information,
                         };
+                        break;
+                    case 'ProductVariant':
+                        //define data for ProductVariant
+                        this.data = {
+
+                        };
+                        break;
+
                     case 'Role':
-                        return { name: this.role_name };
+                        //define data for ApiKey
+                        data = {
+                            name: this.role_name,
+                        };
+                        break;
+                    
                     case 'ApiKey':
-                        return {
+                        //define data for ApiKey
+                        data = {
                             provider: this.provider,
                             secret_key: this.secret_key,
-                            public_key: this.public_key,
-                        };
-                    case 'Message':
-                        return {
-                            name: this.variable,
-                            language: this.selectedLanguage,
-                            message: this.message,
-                        };
+                            public_key: this.public_key
+                        }; 
+                        break;
+
                     default:
-                        return null;
-                }
-            },
-
-            //dynamicly create table row
-            async dynamiclyCreateTableRow(controller) {
-                //create data array
-                let data = this.getDataByController(controller);
-
-                // Validation for required fields
-                if (!data || Object.values(data).some(value => value === null || value === undefined || value === '')) {
-                    Swal.fire({
-                        title: 'Warning!',
-                        text: 'Make sure to fill in every required field :)',
-                        icon: 'warning',
-                    });
-                    return;
+                        throw new Error(`Controller "${controller}" is niet herkend.`);
                 }
 
-                // Handle special cases (e.g., Product with images)
-                if (controller === 'Product') {
-                    try {
+                if (data) {
+                    if (controller == 'Product') {
                         const formData = new FormData();
-                        formData.append('productImage', this.productImageFile);
-                        formData.append('infobarImage', this.infobarImageFile);
+                        formData.append('productImageFile', this.productImageFile);
+                        formData.append('infobarImageFile', this.infobarImageFile);
 
-                        const resWebshop = await this.reqWebshop('POST', '/SaveImage/saveProductImage', formData);
-                        if (!resWebshop.status) throw new Error('Failed to save images in the webshop backend');
+                        this.reqWebshop('POST', '/' + controller + '/saveImage', formData).then((res) => {
+                            console.log(res);
+                            if (!res.status) {
+                               Swal.fire({ //show correct data for true or false
+                                    title: 'Error!',
+                                    text: res.message,
+                                    icon: 'error',
+                                });
+                            } else { //post product images to admin backend
+                                this.req('POST', '/' + controller + '/create' + controller, product_image_data).then((res) => {
+                                    Swal.fire({ //show correct data for true or false
+                                        title: res.status ? 'Succes!' : 'Error!',
+                                        text: res.message,
+                                        icon: res.status ? 'success' : 'error',
+                                    });
+                                })
 
-                        const res = await this.req('POST', '/SaveImage/saveProductImage', formData);
-                        if (!res.status) throw new Error('Failed to save images in the main backend');
-                    } catch (error) {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: error.message,
-                            icon: 'error',
+                            }
                         });
-                        return;
                     }
-                }
 
-                // Save the main data
-                try {
-                    const res = await this.req('POST', `/${controller}/create${controller}`, data);
-                    if (res.status) {
-                        this.cancelCreateScreen();
-                        this.$emit('row-created', controller);
+                    //post payload to its controller
+                    this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
+                        if (res.status) {
+                            this.cancelCreateScreen();
+                            this.$emit('row-created', controller); //get the table again when succesfully inserted new row
+                        }
 
-                        Swal.fire({
-                            title: 'Success!',
+                        Swal.fire({ //show correct data for true or false
+                            title: res.status ? 'Succes!' : 'Error!',
                             text: res.message,
-                            icon: 'success',
+                            icon: res.status ? 'success' : 'error',
                         });
-                    } else {
-                        throw new Error(res.message || 'Unknown error occurred');
-                    }
-                } catch (error) {
-                    Swal.fire({
+                    })
+
+                } else {
+                    Swal.fire({ //error creating payload data
                         title: 'Error!',
-                        text: error.message,
+                        text: 'error.creating.payload',
                         icon: 'error',
                     });
                 }
             },
-
+            
             dynamiclyGetOptions(controller) {
                 this.req('Get', '/' + controller + '/getOptions').then((res) => {
                     if (res.status) {

@@ -140,7 +140,7 @@ export default {
         .spacing {
             margin: 0px;
             margin-left: 12px;
-            margin-rights: 12px;
+            margin-right: 12px;
         }
     }
 </style>

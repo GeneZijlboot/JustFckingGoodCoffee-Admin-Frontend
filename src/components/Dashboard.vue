@@ -8,9 +8,6 @@
                 <h1>Wassup {{ firstname }},<br />{{ displayedText }}</h1>
             </div>
         </div>
-        <div class="fullscreen-container">
-            <button type="button" class="btn btn-primary moving-button" @mouseenter="moveButton" :style="{ top: `${buttonPosition.top}px`, left: `${buttonPosition.left}px` }">Hey {{ firstname }}, click this button!</button>
-        </div>
     </div>
 </template>
 
@@ -38,6 +35,29 @@ export default {
 
             // Funny button
             buttonPosition: { top: 0, left: 0 }, // Initial button position
+            funnyButtonText: null,
+            funnyButtonPhrases: [
+                "Hahahaha!",
+                "Too slow!",
+                "Try harder!",
+                "Nice try!",
+                "You can do better!",
+                "Is that all?",
+                "Almost, but no!",
+                "Better luck next time!",
+                "Too bad, try again!",
+                "Give up yet?",
+                "Not fast enough!",
+                "Is that the best you got?",
+                "You missed!",
+                "I’m too quick for you!",
+                "Close, but not quite!",
+                "Fail!",
+                "You’re not even close!",
+                "Try again, loser!",
+                "Whoops, too slow!",
+                "Hah! Missed me!"
+            ]
         };
     },
 
@@ -48,6 +68,7 @@ export default {
                 if (res.status) {
                     console.log(res);
                     this.firstname = res.data.first_name;
+                    this.funnyButtonText = `Hey ${this.firstname}, click this button!`;
                 }
             });
         },
@@ -81,29 +102,12 @@ export default {
             this.fullText = this.phrases[randomIndex];
             this.currentIndex = 0; // Reset typing position for the new phrase
         },
-
-        moveButton() {
-            // Calculate random position within the full screen
-            const viewportHeight = window.innerHeight;
-            const viewportWidth = window.innerWidth;
-
-            const randomTop = Math.random() * (viewportHeight - 50); // Account for button height
-            const randomLeft = Math.random() * (viewportWidth - 100); // Account for button width
-
-            this.buttonPosition = { top: randomTop, left: randomLeft };
-        },
     },
 
     mounted() {
         this.getSession();
         this.switchPhrase(); // Pick the first random phrase when the component is mounted
         this.typeWriterEffect();
-
-        // Center the button at the start
-        this.buttonPosition = {
-            top: window.innerHeight / 2 - -75, // Center vertically (subtract half the button height)
-            left: window.innerWidth / 2 - 15 // Center horizontally (subtract half the button width)
-        };
     }
 };
 </script>
@@ -114,10 +118,10 @@ export default {
 }
 
 .fullscreen-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 80vw;
     height: 100vh;
     overflow: hidden;
 }

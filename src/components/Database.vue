@@ -6,7 +6,7 @@
         <div v-if="showDatabase" class="table-container p-5 d-flex flex-column gap-5">
             <div class="d-flex justify-content-center">
                 <div class="col-md-12">
-                    <nav class="">
+                    <nav>
                         <div class="nav nav-tabs d-flex column-gap-4" id="nav-tab" role="tablist">
                             <button class="nav-link active fs-5" id="nav-users-tab" data-bs-toggle="tab" data-bs-target="#nav-users" type="button" role="tab" aria-controls="nav-users" aria-selected="false">Users</button>
                             <button class="nav-link fs-5" id="nav-products-tab" data-bs-toggle="tab" data-bs-target="#nav-products" role="tab" aria-controls="nav-products" aria-selected="true">Products</button>
@@ -75,9 +75,11 @@
                                             
                                             <td>
                                                 <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
+                                                {{baseUrl + product.image_url}}
                                             </td>
                                             <td>
                                                 <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" />
+                                                {{baseUrl + product.infobar_image_url}}
                                             </td>
                                             <td>{{product.roast_type}}</td>
                                             <td>{{product.origin}}</td>
