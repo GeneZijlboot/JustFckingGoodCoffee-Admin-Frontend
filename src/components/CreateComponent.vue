@@ -216,21 +216,23 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label :for="'weight_' + index" class="form-label">Weight*</label>
-                                                    <multiselect 
-                                                        v-model="selectedLanguages" 
-                                                        :options="languageOptions" 
-                                                        :searchable="false" 
+                                                    <multiselect
+                                                        v-model="selected_weights[index - 1]"
+                                                        :options="filteredWeightOptions(index)"
+                                                        :searchable="false"
                                                         :allow-empty="false"
-                                                        placeholder="Select a language">
-                                                        <template v-slot:singleLabel="{ option }">{{ option }}</template>
+                                                        label="name"
+                                                        placeholder="Select a weight">
+                                                        <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
                                                     </multiselect>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label :for="'product_price_' + index" class="form-label">Product Price*</label>
+                                                <label :for="'product_price_' + index" class="form-label">Product Price*</label>
                                                     <div class="d-flex gap-2">
-                                                        <span class="fs-5 d-flex align-items-center">$</span><input type="text" class="p-2 form-control" :id="'product_price_' + index" placeholder="Enter price" v-model="product_prices" required />
+                                                        <span class="fs-5 d-flex align-items-center">$</span>
+                                                        <input type="text" class="p-2 form-control" :id="'product_price_' + index" placeholder="Enter price" v-model="product_prices" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -238,17 +240,18 @@
                                     </div>
                                     <div class="col-md-1 d-flex align-items-end mb-1">
                                         <button type="button" class="btn btn-danger" @click="removeProductTypeField(index)">
-                                            &times;
+                                        &times;
                                         </button>
                                     </div>
                                 </div>
+
 
                                 <!-- devider -->
                                 <div class="devider-translations"></div>
 
                                 <!-- translations -->
                                 <h3>Translations:</h3>
-                                <h5 v-if="selectedLanguage">{{selectedLanguage === 'NL' ? 'First translation - Nederlands' : (selectedLanguage === 'EN' ? 'First translation - English' : '') }}</h5>
+                                <h5 v-if="firstSelectedLanguage">{{firstSelectedLanguage === 'NL' ? 'First translation - Nederlands' : (firstSelectedLanguage === 'EN' ? 'First translation - English' : '') }}</h5>
 
                                 <!-- first translation -->
                                 <div class="row my-4">
@@ -257,12 +260,12 @@
                                             <div class="form-group">
                                                 <label for="language" class="form-label">Language*</label>
                                                 <multiselect 
-                                                    v-model="selectedLanguage" 
+                                                    v-model="firstSelectedLanguage" 
                                                     :options="languageOptions" 
                                                     :searchable="false" 
                                                     :allow-empty="false"
                                                     placeholder="Select a language"
-                                                    @input="syncLanguages">
+                                                    @select="syncLanguages">
                                                     <template v-slot:singleLabel="{ option }">{{ option }}</template>
                                                 </multiselect>
                                             </div>
@@ -273,7 +276,7 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">Description*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_description" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_description" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -281,7 +284,7 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">Data*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_data" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_data" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -289,13 +292,13 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">information*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_information" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_information" required></textarea>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="devider-translations"></div>
-                                <h5 v-if="selectedLanguage">{{selectedLanguage === 'NL' ? 'Second translation - Nederlands' : (selectedLanguage === 'EN' ? 'Second translation - English' : '') }}</h5>
+                                <h5 v-if="secondSelectedLanguage">{{secondSelectedLanguage === 'NL' ? 'Second translation - Nederlands' : (secondSelectedLanguage === 'EN' ? 'Second translation - English' : '') }}</h5>
 
                                 <!-- second translation -->
                                 <div class="row my-4">
@@ -304,12 +307,12 @@
                                             <div class="form-group">
                                                 <label for="language" class="form-label">Language*</label>
                                                 <multiselect 
-                                                    v-model="selectedLanguage" 
+                                                    v-model="secondSelectedLanguage" 
                                                     :options="languageOptions" 
                                                     :searchable="false" 
                                                     :allow-empty="false"
                                                     placeholder="Select a language"
-                                                    @input="syncLanguages">
+                                                    @select="syncLanguages">
                                                     <template v-slot:singleLabel="{ option }">{{ option }}</template>
                                                 </multiselect>
                                             </div>
@@ -320,7 +323,7 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">Description*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_description" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_description" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -328,7 +331,7 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">Data*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_data" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_data" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -336,7 +339,7 @@
                                     <div class="col-md-12">
                                     <label for="provider" class="form-label">information*</label>
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_information" required></textarea>
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_information" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -510,12 +513,33 @@
                 infobarImageFile: null,
                 roast_type: null,
                 origin: null,
-                product_description: null,
-                product_data: null,
-                product_information: null,
-                product_prices: null,
-
+                first_product_description: null,
+                first_product_data: null,
+                first_product_information: null,
+                second_product_description: null,
+                second_product_data: null,
+                second_product_information: null,
+                
+                //PRODUCTVARIANTS
                 productTypeIncrementField: 1,
+                weightOptions: [
+                    {
+                        name:  '250 gram',
+                        value: 250,
+                    },
+                    {
+                        name:  '500 gram',
+                        value: 500,
+                    },
+                    {
+                        name:  '1 kg',
+                        value: 1000,
+                    },
+                ],
+                selected_weights: [null, null, null],
+                selected_prices: [null, null, null],
+                firstSelectedLanguage: null,
+                secondSelectedLanguage: null,
 
                 //ROLES
                 user_role_id: null,
@@ -587,20 +611,35 @@
                 }
             },
 
-            //when selecting one language sync the otherone to the other language
+            //switch language for translation when syncing the other one
             syncLanguages(selected) {
-            // Automatically set the opposite language
-                if (selected === 'EN') {
-                    this.selectedLanguage = 'NL';
-                } else if (selected === 'NL') {
-                    this.selectedLanguage = 'EN';
+                if (selected === 'NL') {
+                    this.firstSelectedLanguage = 'NL';
+                    this.secondSelectedLanguage = 'EN';
+                } else if (selected === 'EN') {
+                    this.firstSelectedLanguage = 'EN';
+                    this.secondSelectedLanguage = 'NL';
                 }
+            },
+
+            filteredWeightOptions(index) {
+                let newWeightOptions = [...this.weightOptions];
+
+                // Filter out the weights from newWeightOptions that are present in selected_weights, where selected_weights are not null
+                newWeightOptions = newWeightOptions.filter(option => 
+                    !this.selected_weights.some(selectedWeight => 
+                        selectedWeight !== null && selectedWeight.value === option.value
+                    )
+                );
+
+                return newWeightOptions;
             },
 
             dynamiclyCreateTableRow(controller) {
                 //define empty data
                 let data = {};
-                let product_image_data = {};
+
+                //for when product is selected so that function runs asynchronisly!
                 let ayncFlow = true;
 
                 //define data first
@@ -720,11 +759,13 @@
                 }
             },
             
+            //getting role options 'now hardcodet to be posted into roleOptions -> rewrite this cuz also needed to get options for the product type weight'
             dynamiclyGetOptions(controller) {
                 this.req('Get', '/' + controller + '/getOptions').then((res) => {
                     if (res.status) {
                         res.data.forEach(role => {
                             this.roleOptions.push(role);
+                            console.log(this.roleOptions);
                         });
                     }
                 })
