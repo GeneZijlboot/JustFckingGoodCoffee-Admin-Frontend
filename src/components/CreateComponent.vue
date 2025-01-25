@@ -109,132 +109,251 @@
         <!-- Create Product Component -->  
         <div v-if="modelValue == 'Product'">
             <div class="scrollable vh-100">
-                <div class="row justify-content-center align-items-center mt-5">
-                    <div class="col-md-5 d-flex flex-column justify-content-center">
-                        <h3>New Product:</h3>
-                        <div class="row my-4">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="product_name" class="form-label">product name*</label>
-                                    <input type="text" class="p-2 form-control" id="product_name" placeholder="Enter product name" v-model="product_name" required />
+                <div class="d-flex justify-content-center">
+                <div class="container">
+                    <div class="row d-flex justify-content-center mb-4">
+                        <!-- creating product data -->
+                        <div class="col-md-6">
+                            <div class="row">
+                                <h3 class="mt-5">New Product:</h3>
+                                <div class="row my-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="product_name" class="form-label">product name*</label>
+                                            <input type="text" class="p-2 form-control" id="product_name" placeholder="Enter product name" v-model="product_name" required />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Product Image -->
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <!-- Display image preview -->
-                                <div v-if="productImageUrl" class="shop_image_container">
-                                    <label>Product Image:</label>
-                                    <img class="shop_image card-img-top mt-2" style="cursor: pointer;" @click="productImageFullscreen(productImageUrl)" :src="productImageUrl" alt="Product Image" />
+                                <!-- Product Image -->
+                                <div v-if="productImageUrl"  class="row mb-4">
+                                    <div class="col-md-12">
+                                        <!-- Display image preview -->
+                                        <div class="shop_image_container">
+                                            <label>Product Image:</label>
+                                            <img class="shop_image card-img-top mt-2" style="cursor: pointer;" @click="productImageFullscreen(productImageUrl)" :src="productImageUrl" alt="Product Image" />
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
+                                            <button v-if="productImageUrl" class="btn btn-primary" @click="productImageFullscreen(productImageUrl)">Image Fullscreen</button>
+                                            <button v-if="productImageUrl" class="btn btn-danger" @click="removeImage('productImageFile', 'productImageUrl')">Remove product image</button>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- hidden submit button outside of col -> so it could be hidden -->
                                 <form @submit.prevent>
                                     <input type="file" accept="image/*" id="product-file-input" style="display: none;" @change="onFileChange($event, 'productImageFile', 'productImageUrl')" />
                                 </form>
-                                <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                                    <button v-if="productImageUrl" class="btn btn-primary" @click="productImageFullscreen(productImageUrl)">Image Fullscreen</button>
-                                    <button v-if="productImageUrl" class="btn btn-danger" @click="removeImage('productImageFile', 'productImageUrl')">Remove product image</button>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Infobar Image -->
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <!-- Display image preview -->
-                                <div v-if="infobarImageUrl" class="shop_image_container">
-                                    <label>Infobar Image:</label>
-                                    <img class="img-fluid w-100 infobar-img mt-2" style="cursor: pointer;" @click="productImageFullscreen(infobarImageUrl)" :src="infobarImageUrl" alt="Infobar Image" />
+                                <!-- Infobar Image -->
+                                <div v-if="infobarImageUrl" class="row mb-4">
+                                    <div class="col-md-12">
+                                        <!-- Display image preview -->
+                                        <div class="shop_image_container">
+                                            <label>Infobar Image:</label>
+                                            <img class="img-fluid w-100 infobar-img mt-2" style="cursor: pointer;" @click="productImageFullscreen(infobarImageUrl)" :src="infobarImageUrl" alt="Infobar Image" />
+                                        </div>
+                                        <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
+                                            <button v-if="infobarImageUrl" class="btn btn-primary" @click="productImageFullscreen(infobarImageUrl)">Image Fullscreen</button>
+                                            <button v-if="infobarImageUrl" class="btn btn-danger" @click="removeImage('infobarImageFile', 'infobarImageUrl')">Remove infobar image</button>
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                <!-- hidden submit button outside of col -> so it could be hidden -->
                                 <form @submit.prevent>
                                     <input type="file" accept="image/*" id="infobar-file-input" style="display: none;" @change="onFileChange($event, 'infobarImageFile', 'infobarImageUrl')" />
                                 </form>
-                                <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                                    <button v-if="infobarImageUrl" class="btn btn-primary" @click="productImageFullscreen(infobarImageUrl)">Image Fullscreen</button>
-                                    <button v-if="infobarImageUrl" class="btn btn-danger" @click="removeImage('infobarImageFile', 'infobarImageUrl')">Remove infobar image</button>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- handle buttons for adding the images -->
-                        <div v-if="!productImageUrl && infobarImageUrl" class="d-flex justify-content-end align-items-end">
-                            <label for="product-file-input" class="btn btn-primary">Add product image</label>
-                        </div>
-                        <div v-if="!infobarImageUrl && productImageUrl" class="d-flex justify-content-end align-items-end">
-                            <label for="infobar-file-input" class="btn btn-primary">Add infobar image</label>
-                        </div>
-                        <div v-if="!infobarImageUrl && !productImageUrl" class="d-flex justify-content-end align-items-end gap-2">
-                            <label for="product-file-input" class="btn btn-primary">Add product image</label>
-                            <label for="infobar-file-input" class="btn btn-primary">Add infobar image</label>
-                        </div>
+                                <!-- handle buttons for adding the images -->
+                                <div v-if="!productImageUrl && infobarImageUrl" class="d-flex justify-content-end align-items-end">
+                                    <label for="product-file-input" class="btn btn-primary">Add product image</label>
+                                </div>
+                                <div v-if="!infobarImageUrl && productImageUrl" class="d-flex justify-content-end align-items-end">
+                                    <label for="infobar-file-input" class="btn btn-primary">Add infobar image</label>
+                                </div>
+                                <div v-if="!infobarImageUrl && !productImageUrl" class="d-flex align-items-end gap-2">
+                                    <label for="product-file-input" class="btn btn-primary">Add product image</label>
+                                    <label for="infobar-file-input" class="btn btn-primary">Add infobar image</label>
+                                </div>
 
-                        <div class="row my-4">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="roast_type" class="form-label">Roast type*</label>
-                                    <input type="text" class="p-2 form-control" id="roast_type" placeholder="Enter roast type" v-model="roast_type" required />
+                                <div class="row my-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="roast_type" class="form-label">Roast type*</label>
+                                            <input type="text" class="p-2 form-control" id="roast_type" placeholder="Enter roast type" v-model="roast_type" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="origin" class="form-label">Origin*</label>
+                                            <input type="text" class="p-2 form-control" id="origin" placeholder="Enter origin" v-model="origin" required />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="origin" class="form-label">Origin*</label>
-                                    <input type="text" class="p-2 form-control" id="origin" placeholder="Enter origin" v-model="origin" required />
+                                <!-- devider -->
+                                <div class="devider-translations"></div>
+
+                                <!-- producuct type(s) -->
+                                <h3>Product type:</h3>
+                                
+                                <div class="d-grid gap-2 d-md-block my-4">
+                                    <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                            <label for="provider" class="form-label">Description*</label>
-                            <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_description" required></textarea>
+
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="product_name" class="form-label">product name*</label>
+                                            <input type="text" class="p-2 form-control" id="product_name" placeholder="Enter product name" v-model="product_name" disabled />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                            <label for="provider" class="form-label">Data*</label>
-                            <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_data" required></textarea>
+
+                                <div class="row my-4" v-for="index in productTypeIncrementField" :key="'price_weight' + index">
+                                    <div class="col-md-11">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label :for="'weight_' + index" class="form-label">Weight*</label>
+                                                    <multiselect 
+                                                        v-model="selectedLanguages" 
+                                                        :options="languageOptions" 
+                                                        :searchable="false" 
+                                                        :allow-empty="false"
+                                                        placeholder="Select a language">
+                                                        <template v-slot:singleLabel="{ option }">{{ option }}</template>
+                                                    </multiselect>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label :for="'product_price_' + index" class="form-label">Product Price*</label>
+                                                    <div class="d-flex gap-2">
+                                                        <span class="fs-5 d-flex align-items-center">$</span><input type="text" class="p-2 form-control" :id="'product_price_' + index" placeholder="Enter price" v-model="product_prices" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 d-flex align-items-end mb-1">
+                                        <button type="button" class="btn btn-danger" @click="removeProductTypeField(index)">
+                                            &times;
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                            <label for="provider" class="form-label">information*</label>
-                            <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_information" required></textarea>
+
+                                <!-- devider -->
+                                <div class="devider-translations"></div>
+
+                                <!-- translations -->
+                                <h3>Translations:</h3>
+                                <h5 v-if="selectedLanguage">{{selectedLanguage === 'NL' ? 'First translation - Nederlands' : (selectedLanguage === 'EN' ? 'First translation - English' : '') }}</h5>
+
+                                <!-- first translation -->
+                                <div class="row my-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="language" class="form-label">Language*</label>
+                                                <multiselect 
+                                                    v-model="selectedLanguage" 
+                                                    :options="languageOptions" 
+                                                    :searchable="false" 
+                                                    :allow-empty="false"
+                                                    placeholder="Select a language"
+                                                    @input="syncLanguages">
+                                                    <template v-slot:singleLabel="{ option }">{{ option }}</template>
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="form-group">
-                                        <label for="language" class="form-label">Language*</label>
-                                        <multiselect 
-                                            v-model="selectedLanguage" 
-                                            :options="languageOptions" 
-                                            :searchable="false" 
-                                            :allow-empty="false"
-                                            placeholder="Select a language">
-                                            <template v-slot:singleLabel="{ option }">{{ option }}</template>
-                                        </multiselect>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">Description*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_description" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">Data*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_data" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">information*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_information" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="devider-translations"></div>
+                                <h5 v-if="selectedLanguage">{{selectedLanguage === 'NL' ? 'Second translation - Nederlands' : (selectedLanguage === 'EN' ? 'Second translation - English' : '') }}</h5>
+
+                                <!-- second translation -->
+                                <div class="row my-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label for="language" class="form-label">Language*</label>
+                                                <multiselect 
+                                                    v-model="selectedLanguage" 
+                                                    :options="languageOptions" 
+                                                    :searchable="false" 
+                                                    :allow-empty="false"
+                                                    placeholder="Select a language"
+                                                    @input="syncLanguages">
+                                                    <template v-slot:singleLabel="{ option }">{{ option }}</template>
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">Description*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_description" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">Data*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_data" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                    <label for="provider" class="form-label">information*</label>
+                                    <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="product_information" required></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        <div class="row justify-content-center align-items-center mt-5">
+                            <div class="col-md-5 d-flex flex-column justify-content-center">
+                                <!-- Action Buttons -->
+                                <div class="d-flex justify-content-end align-items-end gap-2 my-3">
+                                    <button class="btn btn-primary" type="button" @click="dynamiclyCreateTableRow(modelValue)">Create Product</button>
+                                    <button class="btn btn-secondary" type="button" @click="cancelCreateScreen()">Cancel</button>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- Action Buttons -->
-                        <div class="d-flex justify-content-end align-items-end gap-2 my-3">
-                            <button class="btn btn-primary" type="button" @click="dynamiclyCreateTableRow(modelValue)">Create Product</button>
-                            <button class="btn btn-secondary" type="button" @click="cancelCreateScreen()">Cancel</button>
                         </div>
-
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -394,6 +513,9 @@
                 product_description: null,
                 product_data: null,
                 product_information: null,
+                product_prices: null,
+
+                productTypeIncrementField: 1,
 
                 //ROLES
                 user_role_id: null,
@@ -439,10 +561,47 @@
                 this.$emit('cancel');
             },
 
+            //create product type fields
+            addProductTypeFields() {
+                if (this.productTypeIncrementField < 3) {
+                    this.productTypeIncrementField += 1;
+                } else {
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'You.can.only.have.3.types',
+                        icon: 'warning',
+                    });
+                }
+            },
+
+            //remove a product type field based on its index
+            removeProductTypeField(index) {
+                if (this.productTypeIncrementField == 1) {
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'you.need.at.least.one.type',
+                        icon: 'warning',
+                    });
+                } else {
+                    this.productTypeIncrementField -= 1; // Decrease the count
+                }
+            },
+
+            //when selecting one language sync the otherone to the other language
+            syncLanguages(selected) {
+            // Automatically set the opposite language
+                if (selected === 'EN') {
+                    this.selectedLanguage = 'NL';
+                } else if (selected === 'NL') {
+                    this.selectedLanguage = 'EN';
+                }
+            },
+
             dynamiclyCreateTableRow(controller) {
                 //define empty data
                 let data = {};
                 let product_image_data = {};
+                let ayncFlow = true;
 
                 //define data first
                 switch (controller) {
@@ -507,21 +666,23 @@
                 }
 
                 if (data) {
-                    if (controller == 'Product') {
+                    if (controller == 'Product' && ayncFlow) {
                         const formData = new FormData();
                         formData.append('productImageFile', this.productImageFile);
                         formData.append('infobarImageFile', this.infobarImageFile);
 
                         this.reqWebshop('POST', '/' + controller + '/saveImage', formData).then((res) => {
-                            console.log(res);
                             if (!res.status) {
-                               Swal.fire({ //show correct data for true or false
+                                Swal.fire({ //show correct data for true or false
                                     title: 'Error!',
                                     text: res.message,
                                     icon: 'error',
                                 });
                             } else { //post product images to admin backend
-                                this.req('POST', '/' + controller + '/create' + controller, product_image_data).then((res) => {
+                                this.req('POST', '/' + controller + '/saveImage', formData).then((res) => {
+                                    if (res.status) {
+                                        asyncFlow = false;
+                                    }
                                     Swal.fire({ //show correct data for true or false
                                         title: res.status ? 'Succes!' : 'Error!',
                                         text: res.message,
@@ -531,22 +692,25 @@
 
                             }
                         });
+                    } else {
+                        ayncFlow = false;
                     }
 
-                    //post payload to its controller
-                    this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
-                        if (res.status) {
-                            this.cancelCreateScreen();
-                            this.$emit('row-created', controller); //get the table again when succesfully inserted new row
-                        }
-
-                        Swal.fire({ //show correct data for true or false
-                            title: res.status ? 'Succes!' : 'Error!',
-                            text: res.message,
-                            icon: res.status ? 'success' : 'error',
-                        });
-                    })
-
+                    if (!ayncFlow) {
+                        //post payload to its controller
+                        this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
+                            if (res.status) {
+                                this.cancelCreateScreen();
+                                this.$emit('row-created', controller); //get the table again when succesfully inserted new row
+                            }
+    
+                            Swal.fire({ //show correct data for true or false
+                                title: res.status ? 'Succes!' : 'Error!',
+                                text: res.message,
+                                icon: res.status ? 'success' : 'error',
+                            });
+                        })
+                    }
                 } else {
                     Swal.fire({ //error creating payload data
                         title: 'Error!',
@@ -581,5 +745,13 @@
     }
     .scrollable {
         overflow-y: auto;
+    }
+    .devider-translations {
+        width: 97%;
+        height: 3px;
+        border: lightgray solid 1px;
+        background-color: lightgray;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 </style>

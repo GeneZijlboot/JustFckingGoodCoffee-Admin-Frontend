@@ -75,11 +75,9 @@
                                             
                                             <td>
                                                 <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
-                                                {{baseUrl + product.image_url}}
                                             </td>
                                             <td>
                                                 <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" />
-                                                {{baseUrl + product.infobar_image_url}}
                                             </td>
                                             <td>{{product.roast_type}}</td>
                                             <td>{{product.origin}}</td>
