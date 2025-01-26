@@ -72,7 +72,6 @@
                                         <tr v-for="product in products">
                                             <td>{{product.id}}</td>
                                             <td>{{product.name}}</td>
-                                            
                                             <td>
                                                 <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
                                             </td>
@@ -329,7 +328,7 @@
                 const data = {
                     id: id
                 }
-
+                
                 if (action == 'C') { //create
                     this.showPage = controller; //show the correct page for creating a table row
                     this.showDatabase = false; //hide the datbase component

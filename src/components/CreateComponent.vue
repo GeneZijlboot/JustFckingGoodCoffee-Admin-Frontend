@@ -141,7 +141,7 @@
 
                                 <!-- hidden submit button outside of col -> so it could be hidden -->
                                 <form @submit.prevent>
-                                    <input type="file" accept="image/*" id="product-file-input" style="display: none;" @change="onFileChange($event, 'productImageFile', 'productImageUrl')" />
+                                    <input type="file" accept="image/*" id="product-file-input" style="display: none;" @change="onFileChange($event, 'productImageFile', 'productImageUrl', 'productImageName')" />
                                 </form>
 
                                 <!-- Infobar Image -->
@@ -161,7 +161,7 @@
                                 
                                 <!-- hidden submit button outside of col -> so it could be hidden -->
                                 <form @submit.prevent>
-                                    <input type="file" accept="image/*" id="infobar-file-input" style="display: none;" @change="onFileChange($event, 'infobarImageFile', 'infobarImageUrl')" />
+                                    <input type="file" accept="image/*" id="infobar-file-input" style="display: none;" @change="onFileChange($event, 'infobarImageFile', 'infobarImageUrl', 'infobarImageName')" />
                                 </form>
 
                                 <!-- handle buttons for adding the images -->
@@ -501,18 +501,14 @@
 
                 //PRODUCTS
                 product_name: null,
+                productImageName: null,
                 productImageUrl: null,
                 productImageFile: null,
+                infobarImageName: null,
                 infobarImageUrl: null,
                 infobarImageFile: null,
                 roast_type: null,
                 origin: null,
-                first_product_description: null,
-                first_product_data: null,
-                first_product_information: null,
-                second_product_description: null,
-                second_product_data: null,
-                second_product_information: null,
                 
                 //PRODUCTVARIANTS
                 productTypeIncrementField: 1,
@@ -530,8 +526,6 @@
                         value: 1000,
                     },
                 ],
-                selected_weights: [null, null, null],
-                selected_prices: [null, null, null],
                 product_types: [
                     {
                         weight: null,
@@ -584,12 +578,12 @@
 
         methods: {
             //handle on file upload
-            onFileChange(event, typeFile, typeUrl) {
+            onFileChange(event, typeFile, typeUrl, typeName) {
                 const file = event.target.files[0];
-
                 if (file) {
                     this[typeFile] = file; //store the file in the productImageFile variable
                     this[typeUrl] = URL.createObjectURL(file); //generate a temporary URL for preview
+                    this[typeName] = file.name; //set name
                 }
             },
 
@@ -649,10 +643,10 @@
             filteredWeightOptions(index) {
                 let newWeightOptions = [...this.weightOptions];
 
-                // Filter out the weights from newWeightOptions that are present in selected_weights, where selected_weights are not null
-                newWeightOptions = newWeightOptions.filter(option => 
-                    !this.selected_weights.some(selectedWeight => 
-                        selectedWeight !== null && selectedWeight.value === option.value
+                // Filter out the weights from newWeightOptions that are present in product_types, where product_types[index].weight is not null
+                newWeightOptions = newWeightOptions.filter(option =>
+                    !this.product_types.some(productType =>
+                        productType.weight !== null && productType.weight.value === option.value
                     )
                 );
 
@@ -686,14 +680,15 @@
                             house_number: this.house_number || '',
                             street_name: this.street_name || '',
                         };
+                        this.asyncFlow = false;
                         break;
 
                     case 'Product':
                         //define data for Product
                         data = {
                             product_name: this.product_name,
-                            product_image_url: this.productImageUrl,
-                            infobar_image_url: this.infobarImageUrl,
+                            product_image_name: this.productImageName,
+                            infobar_image_name: this.infobarImageName,
                             roast_type: this.roast_type,
                             origin: this.origin,
                             product_types: JSON.stringify(this.product_types),
@@ -736,11 +731,13 @@
                             });
                         }
                         break;
+                        
                     case 'ProductVariant':
                         //define data for ProductVariant
                         this.data = {
 
                         };
+                        this.asyncFlow = false;
                         break;
 
                     case 'Role':
@@ -748,6 +745,7 @@
                         data = {
                             name: this.role_name,
                         };
+                        this.asyncFlow = false;
                         break;
                     
                     case 'ApiKey':
@@ -757,6 +755,17 @@
                             secret_key: this.secret_key,
                             public_key: this.public_key
                         }; 
+                        this.asyncFlow = false;
+                        break;
+
+                    case 'Message':
+                        //define data for Message
+                        data = {
+                            name: this.variable,
+                            language: this.selectedLanguage,
+                            message: this.message,
+                        };
+                        this.asyncFlow = false;
                         break;
 
                     default:
