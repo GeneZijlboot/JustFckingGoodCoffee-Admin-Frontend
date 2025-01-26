@@ -73,10 +73,10 @@
                                             <td>{{product.id}}</td>
                                             <td>{{product.name}}</td>
                                             <td>
-                                                <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" />
+                                                <img class="product_image" :src="baseUrl + product.image_url" alt="Coffee Image" style="cursor:pointer;" v-on:click="imageToFullscreen(product.image_url) "/>
                                             </td>
                                             <td>
-                                                <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" />
+                                                <img class="product_image" :src="baseUrl + product.infobar_image_url" alt="Coffee Image" style="cursor:pointer;" v-on:click="imageToFullscreen(product.infobar_image_url)" />
                                             </td>
                                             <td>{{product.roast_type}}</td>
                                             <td>{{product.origin}}</td>
@@ -373,6 +373,12 @@
             handleRowCreated(controller) {
                 // Call dynamiclyGetTable to reload the data
                 this.dynamiclyGetTable(controller);
+            },
+
+            imageToFullscreen(imageName) {
+                if (this.baseUrl) {
+                    window.open(this.baseUrl + imageName, "_blank");
+                }
             }
         },
 
