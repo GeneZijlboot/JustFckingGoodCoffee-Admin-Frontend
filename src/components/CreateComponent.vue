@@ -109,13 +109,12 @@
         <!-- Create Product Component -->  
         <div v-if="modelValue == 'Product'">
             <div class="scrollable vh-100">
-                <div class="d-flex justify-content-center">
-                <div class="container">
-                    <div class="row d-flex justify-content-center mb-4">
-                        <!-- creating product data -->
-                        <div class="col-md-6">
-                            <div class="row">
-                                <h3 class="mt-5">New Product:</h3>
+                <div class="row">
+                    <!-- product details -->
+                    <div class="col-md-6 p-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="mt-3">New Product:</h3>
                                 <div class="row my-4">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -217,7 +216,7 @@
                                                 <div class="form-group">
                                                     <label :for="'weight_' + index" class="form-label">Weight*</label>
                                                     <multiselect
-                                                        v-model="selected_weights[index - 1]"
+                                                        v-model="product_types[index - 1].weight"
                                                         :options="filteredWeightOptions(index)"
                                                         :searchable="false"
                                                         :allow-empty="false"
@@ -229,10 +228,17 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                <label :for="'product_price_' + index" class="form-label">Product Price*</label>
+                                                    <label :for="'product_price_' + index" class="form-label">Product Price*</label>
                                                     <div class="d-flex gap-2">
                                                         <span class="fs-5 d-flex align-items-center">$</span>
-                                                        <input type="text" class="p-2 form-control" :id="'product_price_' + index" placeholder="Enter price" v-model="product_prices" required />
+                                                        <input
+                                                            type="text"
+                                                            class="p-2 form-control"
+                                                            :id="'product_price_' + index"
+                                                            placeholder="Enter price"
+                                                            v-model="product_types[index - 1].price"
+                                                            required
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,123 +246,110 @@
                                     </div>
                                     <div class="col-md-1 d-flex align-items-end mb-1">
                                         <button type="button" class="btn btn-danger" @click="removeProductTypeField(index)">
-                                        &times;
+                                            &times;
                                         </button>
                                     </div>
                                 </div>
-
-
-                                <!-- devider -->
-                                <div class="devider-translations"></div>
-
-                                <!-- translations -->
-                                <h3>Translations:</h3>
-                                <h5 v-if="firstSelectedLanguage">{{firstSelectedLanguage === 'NL' ? 'First translation - Nederlands' : (firstSelectedLanguage === 'EN' ? 'First translation - English' : '') }}</h5>
-
-                                <!-- first translation -->
-                                <div class="row my-4">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="form-group">
-                                                <label for="language" class="form-label">Language*</label>
-                                                <multiselect 
-                                                    v-model="firstSelectedLanguage" 
-                                                    :options="languageOptions" 
-                                                    :searchable="false" 
-                                                    :allow-empty="false"
-                                                    placeholder="Select a language"
-                                                    @select="syncLanguages">
-                                                    <template v-slot:singleLabel="{ option }">{{ option }}</template>
-                                                </multiselect>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">Description*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_description" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">Data*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_data" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">information*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="first_product_information" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="devider-translations"></div>
-                                <h5 v-if="secondSelectedLanguage">{{secondSelectedLanguage === 'NL' ? 'Second translation - Nederlands' : (secondSelectedLanguage === 'EN' ? 'Second translation - English' : '') }}</h5>
-
-                                <!-- second translation -->
-                                <div class="row my-4">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="form-group">
-                                                <label for="language" class="form-label">Language*</label>
-                                                <multiselect 
-                                                    v-model="secondSelectedLanguage" 
-                                                    :options="languageOptions" 
-                                                    :searchable="false" 
-                                                    :allow-empty="false"
-                                                    placeholder="Select a language"
-                                                    @select="syncLanguages">
-                                                    <template v-slot:singleLabel="{ option }">{{ option }}</template>
-                                                </multiselect>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">Description*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_description" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">Data*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_data" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <div class="col-md-12">
-                                    <label for="provider" class="form-label">information*</label>
-                                    <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="second_product_information" required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                        <div class="row justify-content-center align-items-center mt-5">
-                            <div class="col-md-5 d-flex flex-column justify-content-center">
-                                <!-- Action Buttons -->
-                                <div class="d-flex justify-content-end align-items-end gap-2 my-3">
-                                    <button class="btn btn-primary" type="button" @click="dynamiclyCreateTableRow(modelValue)">Create Product</button>
-                                    <button class="btn btn-secondary" type="button" @click="cancelCreateScreen()">Cancel</button>
+                        </div>
+                    </div>
+
+                    <!-- product translations -->
+                    <div class="col-md-6 p-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- translations -->
+                                <h3 class="mt-3">Translations:</h3>
+
+                                <!-- Dynamic translation rows -->
+                                <div v-for="(translation, index) in translations" :key="'translation_' + index">
+                                    <h5 v-if="translation.selectedLanguage">
+                                        {{ index === 0 ? 'First' : 'Second' }} translation - 
+                                        {{ translation.selectedLanguage === 'NL' ? 'Nederlands' : 'English' }}
+                                    </h5>
+
+                                    <!-- Language Selection -->
+                                    <div class="row my-4">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label :for="'language_' + index" class="form-label">Language*</label>
+                                                <multiselect 
+                                                    v-model="translation.selectedLanguage" 
+                                                    :options="languageOptions" 
+                                                    :searchable="false" 
+                                                    :allow-empty="false"
+                                                    placeholder="Select a language">
+                                                    <template v-slot:singleLabel="{ option }">{{ option }}</template>
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <label :for="'description_' + index" class="form-label">Description*</label>
+                                            <div class="form-floating">
+                                                <textarea 
+                                                    class="form-control" 
+                                                    :id="'description_' + index" 
+                                                    placeholder="Leave a comment here" 
+                                                    style="height: 100px" 
+                                                    v-model="translation.description" 
+                                                    required>
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Data -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <label :for="'data_' + index" class="form-label">Data*</label>
+                                            <div class="form-floating">
+                                                <textarea 
+                                                    class="form-control" 
+                                                    :id="'data_' + index" 
+                                                    placeholder="Leave a comment here" 
+                                                    style="height: 100px" 
+                                                    v-model="translation.data" 
+                                                    required>
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Information -->
+                                    <div class="row mb-4">
+                                        <div class="col-md-12">
+                                            <label :for="'information_' + index" class="form-label">Information*</label>
+                                            <div class="form-floating">
+                                                <textarea 
+                                                    class="form-control" 
+                                                    :id="'information_' + index" 
+                                                    placeholder="Leave a comment here" 
+                                                    style="height: 100px" 
+                                                    v-model="translation.information" 
+                                                    required>
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="devider-translations"></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row justify-content-end align-items-center mt-5">
+                        <div class="col-md-5 d-flex flex-column justify-content-center">
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-end align-items-end gap-2 my-3">
+                                <button class="btn btn-primary" type="button" @click="dynamiclyCreateTableRow(modelValue)">Create Product</button>
+                                <button class="btn btn-secondary" type="button" @click="cancelCreateScreen()">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
 
@@ -538,8 +531,36 @@
                 ],
                 selected_weights: [null, null, null],
                 selected_prices: [null, null, null],
+                product_types: [
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                ],
                 firstSelectedLanguage: null,
                 secondSelectedLanguage: null,
+                translations: [
+                    {
+                        selectedLanguage: null,
+                        description: '',
+                        data: '',
+                        information: '',
+                    },
+                    {
+                        selectedLanguage: null,
+                        description: '',
+                        data: '',
+                        information: '',
+                    },
+                ],
 
                 //ROLES
                 user_role_id: null,
@@ -555,6 +576,8 @@
                 languageOptions: ['EN', 'NL'],
                 variable: null,
                 message: null,
+
+                asyncFlow: null,
             }
         },
 
@@ -635,12 +658,12 @@
                 return newWeightOptions;
             },
 
-            dynamiclyCreateTableRow(controller) {
+            async dynamiclyCreateTableRow(controller) {
                 //define empty data
                 let data = {};
 
                 //for when product is selected so that function runs asynchronisly!
-                let ayncFlow = true;
+                this.asyncFlow = true;
 
                 //define data first
                 switch (controller) {
@@ -672,10 +695,43 @@
                             infobar_image_url: this.infobarImageUrl,
                             roast_type: this.roast_type,
                             origin: this.origin,
-                            product_description: this.product_description,
-                            product_data: this.product_data,
-                            product_information: this.product_information,
+                            product_types: this.product_types,
+                            translations: this.translations,
                         };
+
+                        // Handle image upload
+                        try {
+                            const formData = new FormData();
+                            formData.append('productImageFile', this.productImageFile);
+                            formData.append('infobarImageFile', this.infobarImageFile);
+
+                            // First request
+                            const resWebshop = await this.reqWebshop('POST', `/${controller}/saveImage`, formData);
+                            if (!resWebshop.status) {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: resWebshop.message,
+                                    icon: 'error',
+                                });
+                            } else {
+                                // Second request
+                                const resAdmin = await this.req('POST', `/${controller}/saveImage`, formData);
+                                if (resAdmin.status) {
+                                    this.asyncFlow = false;
+                                }
+                                Swal.fire({
+                                    title: resAdmin.status ? 'Success!' : 'Error!',
+                                    text: resAdmin.message,
+                                    icon: resAdmin.status ? 'success' : 'error',
+                                });
+                            }
+                        } catch (error) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: error.message,
+                                icon: 'error',
+                            });
+                        }
                         break;
                     case 'ProductVariant':
                         //define data for ProductVariant
@@ -705,39 +761,13 @@
                 }
 
                 if (data) {
-                    if (controller == 'Product' && ayncFlow) {
-                        const formData = new FormData();
-                        formData.append('productImageFile', this.productImageFile);
-                        formData.append('infobarImageFile', this.infobarImageFile);
-
-                        this.reqWebshop('POST', '/' + controller + '/saveImage', formData).then((res) => {
-                            if (!res.status) {
-                                Swal.fire({ //show correct data for true or false
-                                    title: 'Error!',
-                                    text: res.message,
-                                    icon: 'error',
-                                });
-                            } else { //post product images to admin backend
-                                this.req('POST', '/' + controller + '/saveImage', formData).then((res) => {
-                                    if (res.status) {
-                                        asyncFlow = false;
-                                    }
-                                    Swal.fire({ //show correct data for true or false
-                                        title: res.status ? 'Succes!' : 'Error!',
-                                        text: res.message,
-                                        icon: res.status ? 'success' : 'error',
-                                    });
-                                })
-
-                            }
-                        });
-                    } else {
-                        ayncFlow = false;
-                    }
-
-                    if (!ayncFlow) {
+                    if (!this.asyncFlow) {
                         //post payload to its controller
                         this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
+                            console.log(res);
+                            console.log('data');
+                            console.log(data);
+                            console.log('data');
                             if (res.status) {
                                 this.cancelCreateScreen();
                                 this.$emit('row-created', controller); //get the table again when succesfully inserted new row
@@ -788,10 +818,10 @@
         overflow-y: auto;
     }
     .devider-translations {
-        width: 97%;
+        width: 100%;
         height: 3px;
-        border: lightgray solid 1px;
-        background-color: lightgray;
+        border: gray solid 1px;
+        background-color: gray;
         margin-top: 20px;
         margin-bottom: 20px;
     }
