@@ -279,6 +279,7 @@
                                                     :options="languageOptions" 
                                                     :searchable="false" 
                                                     :allow-empty="false"
+                                                    :input="syncLanguages(index)"
                                                     placeholder="Select a language">
                                                     <template v-slot:singleLabel="{ option }">{{ option }}</template>
                                                 </multiselect>
@@ -629,14 +630,22 @@
                 }
             },
 
-            //switch language for translation when syncing the other one
-            syncLanguages(selected) {
-                if (selected === 'NL') {
-                    this.firstSelectedLanguage = 'NL';
-                    this.secondSelectedLanguage = 'EN';
-                } else if (selected === 'EN') {
-                    this.firstSelectedLanguage = 'EN';
-                    this.secondSelectedLanguage = 'NL';
+            //sync language -> so select the other when selecting one 
+            syncLanguages(selectedIndex) {
+                if(this.translations[selectedIndex].selectedLanguage ) {
+                    if (selectedIndex == 0) {
+                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
+                            this.translations[1].selectedLanguage = 'NL';
+                        } else {
+                            this.translations[1].selectedLanguage = 'EN';
+                        }
+                    } else {
+                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
+                            this.translations[0].selectedLanguage = 'NL';
+                        } else {
+                            this.translations[0].selectedLanguage = 'EN';
+                        }
+                    }
                 }
             },
 
