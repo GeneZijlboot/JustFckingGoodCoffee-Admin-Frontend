@@ -221,6 +221,7 @@
                                                         :searchable="false"
                                                         :allow-empty="false"
                                                         label="name"
+                                                        track-by="value"
                                                         placeholder="Select a weight">
                                                         <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
                                                     </multiselect>
@@ -695,35 +696,37 @@
                             infobar_image_url: this.infobarImageUrl,
                             roast_type: this.roast_type,
                             origin: this.origin,
-                            product_types: this.product_types,
-                            translations: this.translations,
+                            product_types: JSON.stringify(this.product_types),
+                            translations: JSON.stringify(this.translations)
                         };
-
-                        // Handle image upload
+                        
+                        //handle image upload
                         try {
                             const formData = new FormData();
                             formData.append('productImageFile', this.productImageFile);
                             formData.append('infobarImageFile', this.infobarImageFile);
 
-                            // First request
+                            //first request
                             const resWebshop = await this.reqWebshop('POST', `/${controller}/saveImage`, formData);
                             if (!resWebshop.status) {
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: resWebshop.message,
+                                    text: 'failed.to.upload.image.to.webshop',
                                     icon: 'error',
                                 });
                             } else {
-                                // Second request
+                                //second request
                                 const resAdmin = await this.req('POST', `/${controller}/saveImage`, formData);
                                 if (resAdmin.status) {
                                     this.asyncFlow = false;
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'failed.to.upload.image.to.admin',
+                                        icon: 'error',
+                                    });
+
                                 }
-                                Swal.fire({
-                                    title: resAdmin.status ? 'Success!' : 'Error!',
-                                    text: resAdmin.message,
-                                    icon: resAdmin.status ? 'success' : 'error',
-                                });
                             }
                         } catch (error) {
                             Swal.fire({
@@ -764,20 +767,17 @@
                     if (!this.asyncFlow) {
                         //post payload to its controller
                         this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
-                            console.log(res);
-                            console.log('data');
-                            console.log(data);
-                            console.log('data');
                             if (res.status) {
                                 this.cancelCreateScreen();
                                 this.$emit('row-created', controller); //get the table again when succesfully inserted new row
+
+                                Swal.fire({
+                                    title: 'Succes!',
+                                    text: 'succefully.created.product',
+                                    icon: 'success',
+                                });
                             }
     
-                            Swal.fire({ //show correct data for true or false
-                                title: res.status ? 'Succes!' : 'Error!',
-                                text: res.message,
-                                icon: res.status ? 'success' : 'error',
-                            });
                         })
                     }
                 } else {
@@ -795,7 +795,6 @@
                     if (res.status) {
                         res.data.forEach(role => {
                             this.roleOptions.push(role);
-                            console.log(this.roleOptions);
                         });
                     }
                 })

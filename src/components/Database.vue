@@ -111,7 +111,7 @@
                                     <tbody>
                                         <tr v-for="productvariants in productvariants">
                                             <td>{{productvariants.id}}</td>
-                                            <td>{{productvariants.productvariants_name}}</td>
+                                            <td>{{productvariants.product_id}} - {{productvariants.product_name}}</td>
                                             <td>{{productvariants.weight}} gram</td>
                                             <td style="padding-right: 20px;">€{{productvariants.price}},-</td>
                                             <td class="px-4" style="border-left: 1px solid lightgray;">
