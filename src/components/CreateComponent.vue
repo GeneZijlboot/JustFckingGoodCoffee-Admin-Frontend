@@ -2,7 +2,7 @@
     <div class="container-fluid px-5">
         <!-- Create User Component -->  
         <div v-if="modelValue == 'User'">
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center mt-5">
                 <div class="container">
                     <div class="row d-flex justify-content-between mb-4">
                         <div class="col-md-6 pe-5">
@@ -251,6 +251,7 @@
                                         </button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -357,10 +358,73 @@
 
         <!-- Create ProductVariant Component -->
         <div v-if="modelValue == 'ProductVariant'">
-            <p>ProductVariant create</p>
-            <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                <button class="btn btn-primary" type="button">Create Product Variant</button>
-                <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+            <div class="row justify-content-center align-items-center mt-5">
+                <div class="col-md-5 d-flex flex-column justify-content-center">
+
+                    <!-- producuct type(s) -->
+                    <h3>ProductVariant create</h3>
+
+                    <!-- add another product type -->
+                    <div class="d-grid gap-2 d-md-block my-4">
+                        <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
+                    </div>
+
+                    <div class="row my-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="product_name" class="form-label">product name*</label>
+                                <input type="text" class="p-2 form-control" id="product_name" placeholder="Enter product name" v-model="product_name" disabled />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row my-4" v-for="index in productTypeIncrementField" :key="'price_weight' + index">
+                        <div class="col-md-11">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label :for="'weight_' + index" class="form-label">Weight*</label>
+                                        <multiselect
+                                            v-model="product_types[index - 1].weight"
+                                            :options="filteredWeightOptions(index)"
+                                            :searchable="false"
+                                            :allow-empty="false"
+                                            label="name"
+                                            track-by="value"
+                                            placeholder="Select a weight">
+                                            <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
+                                        </multiselect>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label :for="'product_price_' + index" class="form-label">Product Price*</label>
+                                        <div class="d-flex gap-2">
+                                            <span class="fs-5 d-flex align-items-center">$</span>
+                                            <input
+                                                type="text"
+                                                class="p-2 form-control"
+                                                :id="'product_price_' + index"
+                                                placeholder="Enter price"
+                                                v-model="product_types[index - 1].price"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end mb-1">
+                            <button type="button" class="btn btn-danger" @click="removeProductTypeField(index)">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
+                        <button class="btn btn-primary" type="button">Create Product Variant</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -527,36 +591,38 @@
                         value: 1000,
                     },
                 ],
-                product_types: [
-                    {
-                        weight: null,
-                        price: null,
-                    },
-                    {
-                        weight: null,
-                        price: null,
-                    },
-                    {
-                        weight: null,
-                        price: null,
-                    },
-                ],
+                product_types: [],
+                // product_types: [
+                //     {
+                //         weight: null,
+                //         price: null,
+                //     },
+                //     {
+                //         weight: null,
+                //         price: null,
+                //     },
+                //     {
+                //         weight: null,
+                //         price: null,
+                //     },
+                // ],
                 firstSelectedLanguage: null,
                 secondSelectedLanguage: null,
-                translations: [
-                    {
-                        selectedLanguage: null,
-                        description: '',
-                        data: '',
-                        information: '',
-                    },
-                    {
-                        selectedLanguage: null,
-                        description: '',
-                        data: '',
-                        information: '',
-                    },
-                ],
+                translations: [],
+                // translations: [
+                //     {
+                //         selectedLanguage: null,
+                //         description: '',
+                //         data: '',
+                //         information: '',
+                //     },
+                //     {
+                //         selectedLanguage: null,
+                //         description: '',
+                //         data: '',
+                //         information: '',
+                //     },
+                // ],
 
                 //ROLES
                 user_role_id: null,
@@ -789,19 +855,21 @@
                                 this.cancelCreateScreen();
                                 this.$emit('row-created', controller); //get the table again when succesfully inserted new row
 
-                                Swal.fire({
-                                    title: 'Succes!',
-                                    text: 'succefully.created.product',
-                                    icon: 'success',
-                                });
                             }
+
+                            //fire swall for erro or succes
+                            Swal.fire({
+                                title: res.status ? 'Succes!' : 'Error!',
+                                text: this.$t(res.message),
+                                icon: res.status ? 'success' : 'error',
+                            });
     
                         })
                     }
                 } else {
                     Swal.fire({ //error creating payload data
                         title: 'Error!',
-                        text: 'error.creating.payload',
+                        text: this.$t('error.creating.payload'),
                         icon: 'error',
                     });
                 }
@@ -811,9 +879,17 @@
             dynamiclyGetOptions(controller) {
                 this.req('Get', '/' + controller + '/getOptions').then((res) => {
                     if (res.status) {
-                        res.data.forEach(role => {
-                            this.roleOptions.push(role);
-                        });
+                        if (controller == 'Role') {
+                            res.data.forEach(role => {
+                                this.roleOptions.push(role);
+                            });
+                        } else if (controller == 'ProductVariant') {
+                            res.data.forEach(productVariant => {
+                                this.productVariantOptions.push(productVariant);
+                            });
+                        }
+
+                        
                     }
                 })
             }

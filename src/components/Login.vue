@@ -47,6 +47,10 @@
 
                 //login req
                 this.req('POST', '/user/login', data).then((res) => {
+                    //set the storage item to the status ( not logged in => false + vice versa)
+                    localStorage.setItem('currentUser', res.status);
+
+                    //handle true or false
                     if (res.status) {
                         localStorage.setItem('authentication', res.status); // login succesfull -> authenticated = true
                         this.$router.push('/page/dashboard');

@@ -32,6 +32,8 @@ const i18n = createI18n({
     fallbackLocale: 'nl',
     messages,
     reloadOnLanguageChange: false,
+    globalInjection: true,
+    escapeParameterHtml: true,
 });
 
 //create the app instance
@@ -40,12 +42,16 @@ const app = createApp(App);
 //get messages from backend
 functions.methods.req('GET', '/message/getWithLanguage').then((res) => {
     if (res.status) {
-        console.log(res);
         for (let locale in res.data) {
             i18n.global.setLocaleMessage(locale.toLocaleLowerCase(), res.data[locale])
-            console.log(locale);
         }
     }
+});
+
+//check if user is logged in or not
+functions.methods.req('GET', '/user/getsession').then((res) => {
+    //set the storage item to the status ( not logged in => false + vice versa)
+    localStorage.setItem('currentUser', res.status);
 });
 
 //add the mixin

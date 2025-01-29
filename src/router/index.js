@@ -68,15 +68,18 @@ const router = createRouter({
   ]
 });
 
-// router.beforeEach((to, from, next) => {
-//   const isAuthenticated = localStorage.getItem('authentication'); // Checkt of de gebruiker ingelogd is
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('currentUser') === "true"; // Convert string to boolean
 
-//   // Als de gebruiker ingelogd is en naar login of register gaat, stuur hem naar de dashboard
-//   if (isAuthenticated && (to.path === '/login' || to.path === '/register' || to.path === '/reset_password' || to.path === '/forgot_password')) {
-//     next('/account');
-//   } else {
-//     next(); // Ga verder naar de gewenste route
-//   }
-// });
+  if (!isAuthenticated && !['/page/login', '/page/forgot_password', '/page/reset_password'].includes(to.path)) {
+    if (to.path !== '/page/login') { // Prevent redundant redirects
+      next('/page/login');
+    }
+  } else if (isAuthenticated && ['/page/login', '/page/forgot_password', '/page/reset_password'].includes(to.path)) {
+    next('/page/dashboard');
+  } else {
+    next();
+  }
+});
 
 export default router;
