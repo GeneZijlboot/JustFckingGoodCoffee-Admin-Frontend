@@ -33,7 +33,8 @@ const i18n = createI18n({
     messages,
     reloadOnLanguageChange: false,
     globalInjection: true,
-    escapeParameterHtml: true,
+    escapeParameterHtml: false,  // Disable escaping
+    
 });
 
 //create the app instance

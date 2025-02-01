@@ -22,6 +22,7 @@
                         <!-- Users Table -->
                         <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', users[0].controller)">Create user</button>
+                            <SearchBar :data="'user'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -34,7 +35,7 @@
                                     <tbody>
                                         <tr v-for="user in users">
                                             <td>{{user.id}}</td>
-                                            <td>{{user.user_role}}</td>
+                                            <td>{{user.user_role ? user.user_role : user.user_role_id + ' - ' + user.role_name}}</td>
                                             <td>{{user.first_name}}</td>
                                             <td>{{user.last_name}}</td>
                                             <td>{{user.email}}</td>
@@ -59,6 +60,7 @@
                         <!-- Products Table -->
                         <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', products[0].controller)">Create product</button>
+                            <SearchBar :data="'product'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -104,6 +106,7 @@
                         <!-- Product Variants Table -->
                         <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-product-variants-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', productvariants[0].controller)">Create product variant</button>
+                            <SearchBar :data="'productvariant'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -133,6 +136,7 @@
                         <!-- Roles Table -->
                         <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', roles[0].controller)">Create role</button>
+                            <SearchBar :data="'role'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -160,6 +164,7 @@
                         <!-- Api Keys Table -->
                         <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-api-keys-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', apikeys[0].controller)">Create api key</button>
+                            <SearchBar :data="'apikey'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -189,6 +194,7 @@
                         <!-- Message Table -->
                         <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-messages-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller)">Create messages</button>
+                            <SearchBar :data="'message'" @search-result="handleSearchResult" @remove-search="removeSearchParam"/>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -253,12 +259,14 @@
 <script>
     import Taskbar from './Taskbar.vue';
     import CreateComponent from './CreateComponent.vue';
+    import SearchBar from './SearchBar.vue';
     import Swal from 'sweetalert2';
     
     export default {
         components: {
             Taskbar,
-            CreateComponent
+            CreateComponent,
+            SearchBar
         },
 
         data() {
@@ -385,6 +393,16 @@
                 if (this.baseUrl) {
                     window.open(this.baseUrl + imageName, "_blank");
                 }
+            },
+
+            handleSearchResult(resultData) {
+                console.log(resultData);
+                //set new data by search
+                this[resultData.controller.toLowerCase() + 's'] = resultData.data.search_param;
+            },
+
+            removeSearchParam(resultData) {
+                this.dynamiclyGetTable(resultData);
             }
         },
 

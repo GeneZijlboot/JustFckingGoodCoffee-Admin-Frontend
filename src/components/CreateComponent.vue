@@ -190,12 +190,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <!-- devider -->
                                 <div class="devider-translations"></div>
 
                                 <!-- producuct type(s) -->
                                 <h3>Product type:</h3>
-                                
+
                                 <div class="d-grid gap-2 d-md-block my-4">
                                     <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
                                 </div>
@@ -262,14 +263,13 @@
                             <div class="col-md-12">
                                 <!-- translations -->
                                 <h3 class="mt-3">Translations:</h3>
-
                                 <!-- Dynamic translation rows -->
                                 <div v-for="(translation, index) in translations" :key="'translation_' + index">
                                     <h5 v-if="translation.selectedLanguage">
                                         {{ index === 0 ? 'First' : 'Second' }} translation - 
                                         {{ translation.selectedLanguage === 'NL' ? 'Nederlands' : 'English' }}
                                     </h5>
-
+                                
                                     <!-- Language Selection -->
                                     <div class="row my-4">
                                         <div class="col-md-12">
@@ -369,11 +369,20 @@
                         <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
                     </div>
 
-                    <div class="row my-4">
+                    <div v-if="productVariantOptions" class="row my-4">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="product_name" class="form-label">product name*</label>
-                                <input type="text" class="p-2 form-control" id="product_name" placeholder="Enter product name" v-model="product_name" disabled />
+                                <label for="product_variant" class="form-label">Product name*</label>
+                                <multiselect
+                                    v-model="selectedProductVariant"
+                                    :options="productVariantOptions"
+                                    :searchable="false"
+                                    :allow-empty="false"
+                                    label="name"
+                                    track-by="id"
+                                    placeholder="Select a product">
+                                    <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
+                                </multiselect>
                             </div>
                         </div>
                     </div>
@@ -484,7 +493,7 @@
             </div>
         </div>
 
-        <!-- Create Message Component -->
+        <!-- Create   Component -->
         <div v-if="modelValue == 'Message'">
             <div class="row justify-content-center align-items-center mt-5">
                 <div class="col-md-5 d-flex flex-column justify-content-center">
@@ -542,7 +551,7 @@
             Taskbar,
             Multiselect
         },
-
+ 
         props: {
             modelValue: {
                 type: String,
@@ -591,38 +600,27 @@
                         value: 1000,
                     },
                 ],
-                product_types: [],
-                // product_types: [
-                //     {
-                //         weight: null,
-                //         price: null,
-                //     },
-                //     {
-                //         weight: null,
-                //         price: null,
-                //     },
-                //     {
-                //         weight: null,
-                //         price: null,
-                //     },
-                // ],
-                firstSelectedLanguage: null,
-                secondSelectedLanguage: null,
-                translations: [],
-                // translations: [
-                //     {
-                //         selectedLanguage: null,
-                //         description: '',
-                //         data: '',
-                //         information: '',
-                //     },
-                //     {
-                //         selectedLanguage: null,
-                //         description: '',
-                //         data: '',
-                //         information: '',
-                //     },
-                // ],
+                product_types: [
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                    {
+                        weight: null,
+                        price: null,
+                    },
+                ],
+
+                productVariantOptions: [],
+                selectedProductVariant: null,
+                translations: [
+                    { selectedLanguage: '', description: '', data: '', information: '' }, 
+                    { selectedLanguage: '', description: '', data: '', information: '' }
+                ],
 
                 //ROLES
                 user_role_id: null,
@@ -883,13 +881,16 @@
                             res.data.forEach(role => {
                                 this.roleOptions.push(role);
                             });
-                        } else if (controller == 'ProductVariant') {
-                            res.data.forEach(productVariant => {
-                                this.productVariantOptions.push(productVariant);
-                            });
                         }
 
-                        
+                    }
+                })
+            },
+
+            getProductVariants() {
+                this.req('Get', '/Product/getOptions').then((res) => {
+                    if (res.status) {
+                        this.productVariantOptions = res.data;
                     }
                 })
             }
@@ -898,6 +899,10 @@
         mounted() {
             if (this.modelValue == 'User') { //get Role options to create a User
                 this.dynamiclyGetOptions('Role');
+            }
+
+            if (this.modelValue == 'ProductVariant') {
+                 this.getProductVariants();
             }
         }
     }
