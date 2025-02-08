@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
             <div class="d-flex gap-3">
                 <button v-if="SearchActive" type="button" class="btn btn-danger mb-3" @click="removeSearchData">
                     &times;

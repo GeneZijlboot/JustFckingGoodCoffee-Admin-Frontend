@@ -22,7 +22,14 @@
                         <!-- Users Table -->
                         <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', users[0].controller, null, null)">Create user</button>
-                            <SearchBar :data="'user'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                            
+                            <div class="d-flex gap-3 align-items-center">
+                                <div><SearchBar :data="'user'" @search-result="handleSearchResult" @remove-search="removeSearchParam" /></div>
+                                <svg v-on:click="openHelpModal(users[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -67,7 +74,13 @@
                         <!-- Products Table -->
                         <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', products[0].controller, null, null)">Create product</button>
-                            <SearchBar :data="'product'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                            <div class="d-flex gap-3 align-items-center">
+                                <SearchBar :data="'product'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                                <svg v-on:click="openHelpModal(products[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -120,7 +133,13 @@
                         <!-- Product Variants Table -->
                         <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-product-variants-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', productvariants[0].controller, null, null)">Create product variant</button>
-                            <SearchBar :data="'productvariant'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                            <div class="d-flex gap-3 align-items-center">
+                                <SearchBar :data="'productvariant'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                                <svg v-on:click="openHelpModal(productvariants[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -157,7 +176,13 @@
                         <!-- Roles Table -->
                         <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', roles[0].controller, null, null)">Create role</button>
-                            <SearchBar :data="'role'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                            <div class="d-flex gap-3 align-items-center">
+                                <SearchBar :data="'role'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                                <svg v-on:click="openHelpModal(roles[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -192,7 +217,13 @@
                         <!-- Api Keys Table -->
                         <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-api-keys-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', apikeys[0].controller, null, null)">Create api key</button>
-                            <SearchBar :data="'apikey'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                            <div class="d-flex gap-3 align-items-center">
+                                <SearchBar :data="'apikey'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
+                                <svg v-on:click="openHelpModal(apikeys[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -229,7 +260,13 @@
                         <!-- Message Table -->
                         <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-messages-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller, null, null)">Create messages</button>
-                            <SearchBar :data="'message'" @search-result="handleSearchResult" @remove-search="removeSearchParam"/>
+                            <div class="d-flex gap-3 align-items-center">
+                                <SearchBar :data="'message'" @search-result="handleSearchResult" @remove-search="removeSearchParam"/>
+                                <svg v-on:click="openHelpModal(messages[0].controller)" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-question-circle icon" style="margin-bottom: 17px;" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                    <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                                </svg>
+                            </div>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -299,6 +336,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Help button modal -->
+                    <div id="helpModal" class="modal fade" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">{{helpModalTitle}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>{{helpModalSubtitle}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -310,6 +363,8 @@
     import CrudHandler from './CrudHandler.vue';
     import SearchBar from './SearchBar.vue';
     import Swal from 'sweetalert2';
+
+    import { Modal } from 'bootstrap';
     
     export default {
         components: {
@@ -320,6 +375,8 @@
 
         data() {
             return {
+                helpModalTitle: null,
+                helpModalSubtitle: null, 
                 showPage: null, 
                 showDatabase: true,
                 baseUrl: import.meta.env.VITE_BASE_URL,
@@ -453,6 +510,50 @@
 
             removeSearchParam(resultData) {
                 this.dynamiclyGetTable(resultData);
+            },
+
+            openHelpModal(controller) {
+                //create help modal data
+                switch (controller) {
+                    case 'User':
+                        this.helpModalTitle = 'User Table';
+                        this.helpModalSubtitle = 'user test description';
+                        break;
+
+                    case 'Product':
+                        this.helpModalTitle = 'Product Table';
+                        this.helpModalSubtitle = 'product test description';
+                        break;
+                        
+                    case 'ProductVariant':
+                        this.helpModalTitle = 'ProductVariant Table';
+                        this.helpModalSubtitle = 'productvariant test description';
+                        break;
+
+                    case 'Role':
+                        this.helpModalTitle = 'Role Table';
+                        this.helpModalSubtitle = 'role test description';
+                        break;
+                    
+                    case 'ApiKey':
+                        this.helpModalTitle = 'ApiKey Table';
+                        this.helpModalSubtitle = 'apikey test description';
+                        break;
+
+                    case 'Message':
+                        this.helpModalTitle = 'Message Table';
+                        this.helpModalSubtitle = 'message test description';
+                        break;
+
+                    default:
+                        throw new Error(`Controller "${controller}" is niet herkend.`);
+                }
+
+                //define modal
+                let helpModal = new Modal(document.getElementById('helpModal'));
+
+                //display modal
+                helpModal.show();
             }
         },
 
