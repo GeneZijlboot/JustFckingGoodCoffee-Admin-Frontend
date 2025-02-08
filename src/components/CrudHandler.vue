@@ -669,7 +669,8 @@
                         
                     case 'ProductVariant':
                         //define values for ProductVariant
-                        
+                        this.selectedLanguage = this.languageOptions.find(language => language === this.updateValues.language);
+                        this.selectedLanguage = this.languageOptions.find(language => language === this.updateValues.language);
                         break;
 
                     case 'Role':
@@ -895,6 +896,7 @@
 
                         //when user pressed update then preset the roleoption when updateing a user
                         if (this.updateValues && this.updateValues.user_role_id) {
+                            console.log(this.roleOptions);
                             this.user_role_id = this.roleOptions.find(role => role.id === this.updateValues.user_role_id);
                         }
                     }
@@ -906,6 +908,11 @@
                 this.req('Get', '/Product/getOptions').then((res) => {
                     if (res.status) {
                         this.productVariantOptions = res.data;
+
+                        //when user pressed update then preset the roleoption when updateing a user
+                        if (this.updateValues && this.updateValues.id) {
+                            this.selectedProductVariant = this.productVariantOptions.find(productVariant => productVariant.id === this.updateValues.product_id);
+                        }
                     }
                 })
             },
@@ -1006,7 +1013,7 @@
 
             //pressed on UPDATE -> set fields values
             if (this.updateValues) {
-                console.log(this.updateValues);
+                // console.log(this.updateValues);
                 this.setUpdateFieldValues(this.modelValue, this.updateValues);
             }
         }
