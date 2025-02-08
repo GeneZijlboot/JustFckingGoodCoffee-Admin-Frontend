@@ -342,11 +342,10 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">{{helpModalTitle}}</h5>
+                                    <h5 class="modal-title">Documentation - {{helpModalTitle}}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <p>{{helpModalSubtitle}}</p>
+                                <div class="modal-body" v-html="helpModalSubtitle">
                                 </div>
                             </div>
                         </div>
@@ -518,14 +517,17 @@
                     case 'User':
                         this.helpModalTitle = 'User Table';
                         this.helpModalSubtitle = `
-                            This section allows you to create a new user, edit an existing user, or delete a user.
-                            When you create a new user, the fields:
-                            - 'City'
-                            - 'Zip Code'
-                            - 'Street Name'
-                            - 'House Number'
-                            - 'Phone Number'
-                            are optional. These fields do not have to be filled in to create a user.
+                            <section>
+                                <p>This section allows you to create a new user or edit/delete an existing user.<br />When you create a new user, these fields:</p>
+                                <ul>
+                                    <li><strong>City</strong></li>
+                                    <li><strong>Zip Code</strong></li>
+                                    <li><strong>Street Name</strong></li>
+                                    <li><strong>House Number</strong></li>
+                                    <li><strong>Phone Number</strong></li>
+                                </ul>
+                                <p>are optional, They do not have to be filled in to create a user.<br />Lastly the search-bar allows you to search for a specific user.</p>
+                            </section>
                         `;
                         break;
 

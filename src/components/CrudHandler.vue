@@ -364,8 +364,8 @@
                     <!-- producuct type(s) -->
                     <h3>ProductVariant create</h3>
 
-                    <!-- add another product type -->
-                    <div class="d-grid gap-2 d-md-block my-4">
+                    <!-- add another product type (only show in create mode not update)-->
+                    <div v-if="!updateValues" class="d-grid gap-2 d-md-block my-4">
                         <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
                     </div>
 
@@ -380,7 +380,9 @@
                                     :allow-empty="false"
                                     label="name"
                                     track-by="id"
-                                    placeholder="Select a product">
+                                    placeholder="Select a product"
+                                    :disabled="updateValues"
+                                    >
                                     <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
                                 </multiselect>
                             </div>
@@ -400,7 +402,9 @@
                                             :allow-empty="false"
                                             label="name"
                                             track-by="value"
-                                            placeholder="Select a weight">
+                                            placeholder="Select a weight"
+                                            :disabled="updateValues"
+                                            >
                                             <template v-slot:singleLabel="{ option }">{{ option.name }}</template>
                                         </multiselect>
                                     </div>
@@ -668,9 +672,17 @@
                         break;
                         
                     case 'ProductVariant':
-                        //define values for ProductVariant
-                        this.selectedLanguage = this.languageOptions.find(language => language === this.updateValues.language);
-                        this.selectedLanguage = this.languageOptions.find(language => language === this.updateValues.language);
+                        //find the matching weight option based on truncated weight value
+                        const selectedWeight = this.weightOptions.find(weight => weight.value === Math.trunc(this.updateValues.weight)) || null;
+
+                        // Define values for ProductVariant
+                        this.product_types = [
+                            {
+                                weight: selectedWeight,  // Assign the full object from weightOptions
+                                price: this.updateValues.price,
+                            },
+                        ];
+
                         break;
 
                     case 'Role':
@@ -909,7 +921,7 @@
                     if (res.status) {
                         this.productVariantOptions = res.data;
 
-                        //when user pressed update then preset the roleoption when updateing a user
+                        //when user pressed update then preset the roleoption when updating a product variant
                         if (this.updateValues && this.updateValues.id) {
                             this.selectedProductVariant = this.productVariantOptions.find(productVariant => productVariant.id === this.updateValues.product_id);
                         }
@@ -1013,7 +1025,7 @@
 
             //pressed on UPDATE -> set fields values
             if (this.updateValues) {
-                // console.log(this.updateValues);
+                console.log(this.updateValues);
                 this.setUpdateFieldValues(this.modelValue, this.updateValues);
             }
         }
