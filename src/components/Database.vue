@@ -517,7 +517,16 @@
                 switch (controller) {
                     case 'User':
                         this.helpModalTitle = 'User Table';
-                        this.helpModalSubtitle = 'user test description';
+                        this.helpModalSubtitle = `
+                            This section allows you to create a new user, edit an existing user, or delete a user.
+                            When you create a new user, the fields:
+                            - 'City'
+                            - 'Zip Code'
+                            - 'Street Name'
+                            - 'House Number'
+                            - 'Phone Number'
+                            are optional. These fields do not have to be filled in to create a user.
+                        `;
                         break;
 
                     case 'Product':

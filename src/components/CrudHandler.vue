@@ -792,8 +792,9 @@
                         
                     case 'ProductVariant':
                         //define data for ProductVariant
-                        this.data = {
-
+                        data = {
+                            product_id: this.selectedProductVariant.id,
+                            product_types: JSON.stringify(this.product_types),
                         };
 
                         // If this.updateValue exists and has an id, add it to data
