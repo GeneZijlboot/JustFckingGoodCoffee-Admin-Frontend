@@ -100,7 +100,7 @@
                     </div>
                     <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
                         <button class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create User</button>
-                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancleCrudHandlerScreen()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -198,7 +198,7 @@
                                 <h3>Product type:</h3>
 
                                 <div class="d-grid gap-2 d-md-block my-4">
-                                    <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
+                                    <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ New product type</button>
                                 </div>
 
                                 <div class="row mb-4">
@@ -348,7 +348,7 @@
                             <!-- Action Buttons -->
                             <div class="d-flex justify-content-end align-items-end gap-2 my-3">
                                 <button class="btn btn-primary" type="button" @click="dynamiclyCreateTableRow(modelValue)">Create Product</button>
-                                <button class="btn btn-secondary" type="button" @click="cancelCreateScreen()">Cancel</button>
+                                <button class="btn btn-secondary" type="button" @click="cancleCrudHandlerScreen()">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -366,7 +366,7 @@
 
                     <!-- add another product type -->
                     <div class="d-grid gap-2 d-md-block my-4">
-                        <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ Create a product type</button>
+                        <button class="btn btn-primary" type="button" @click="addProductTypeFields">+ New product type</button>
                     </div>
 
                     <div v-if="productVariantOptions" class="row my-4">
@@ -431,7 +431,7 @@
                     </div>
                     <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
                         <button class="btn btn-primary" type="button">Create Product Variant</button>
-                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancleCrudHandlerScreen()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -451,8 +451,9 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
-                        <button class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create Role</button>
-                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                        <button v-if="action == 'C'" class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create Role</button>
+                        <button v-if="action == 'U'" class="btn btn-primary" type="button" v-on:click="dynamiclyUpdateTableRow(modelValue)">Update Role</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancleCrudHandlerScreen()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -487,7 +488,7 @@
                     </div>
                      <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
                         <button class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create Api Key</button>
-                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancleCrudHandlerScreen()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -533,7 +534,7 @@
                     </div>
                     <div class="d-flex justify-content-end align-items-end gap-2 mt-3">
                         <button class="btn btn-primary" type="button" v-on:click="dynamiclyCreateTableRow(modelValue)">Create Message</button>
-                        <button class="btn btn-secondary" type="button" v-on:click="cancelCreateScreen()">Cancel</button>
+                        <button class="btn btn-secondary" type="button" v-on:click="cancleCrudHandlerScreen()">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -557,10 +558,17 @@
                 type: String,
                 required: true,
             },
+
+            updateValues: {
+                type: Object,
+                required: false,
+                default: () => ({})
+            }
         },
         
         data() {
             return {
+                action: null,
                 //USERS
                 first_name: null,
                 last_name: null,
@@ -625,6 +633,7 @@
                 //ROLES
                 user_role_id: null,
                 roleOptions: [],
+                role_name: null,
 
                 //API KEY
                 provider: null,
@@ -641,133 +650,24 @@
             }
         },
 
+        mounted() {
+            //if action is UPDATE -> fill v-model with the send through data
+            if (action = 'U') {
+                // call function to insert correct data by controller
+                this.adjustDataByController(action, controller);
+            }
+        },
+
         methods: {
-            //handle on file upload
-            onFileChange(event, typeFile, typeUrl, typeName) {
-                const file = event.target.files[0];
-                if (file) {
-                    this[typeFile] = file; //store the file in the productImageFile variable
-                    this[typeUrl] = URL.createObjectURL(file); //generate a temporary URL for preview
-                    this[typeName] = file.name; //set name
-                }
-            },
-
-            //open product image in fullscreen
-            productImageFullscreen(typeUrl) {
-                window.open(typeUrl, "_blank");
-            },
-
-            //remove added image
-            removeImage(typeFile, typeUrl) {
-                this[typeFile] = null;
-                this[typeUrl] = '';
-            },
-
             //cancle create screen, go back to database tabs
-            cancelCreateScreen() {
+            cancleCrudHandlerScreen() {
                 this.$emit('cancel');
             },
 
-            //create product type fields
-            addProductTypeFields() {
-                if (this.productTypeIncrementField < 3) {
-                    this.productTypeIncrementField += 1;
-                } else {
-                    Swal.fire({
-                        title: 'Warning!',
-                        text: 'You.can.only.have.3.types',
-                        icon: 'warning',
-                    });
-                }
-            },
-
-            //remove a product type field based on its index
-            removeProductTypeField(index) {
-                if (this.productTypeIncrementField == 1) {
-                    Swal.fire({
-                        title: 'Warning!',
-                        text: 'you.need.at.least.one.type',
-                        icon: 'warning',
-                    });
-                } else {
-                    this.productTypeIncrementField -= 1; // Decrease the count
-                }
-            },
-
-            //sync language -> so select the other when selecting one 
-            syncLanguages(selectedIndex) {
-                if(this.translations[selectedIndex].selectedLanguage ) {
-                    if (selectedIndex == 0) {
-                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
-                            this.translations[1].selectedLanguage = 'NL';
-                        } else {
-                            this.translations[1].selectedLanguage = 'EN';
-                        }
-                    } else {
-                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
-                            this.translations[0].selectedLanguage = 'NL';
-                        } else {
-                            this.translations[0].selectedLanguage = 'EN';
-                        }
-                    }
-                }
-            },
-
-            filteredWeightOptions(index) {
-                let newWeightOptions = [...this.weightOptions];
-
-                // Filter out the weights from newWeightOptions that are present in product_types, where product_types[index].weight is not null
-                newWeightOptions = newWeightOptions.filter(option =>
-                    !this.product_types.some(productType =>
-                        productType.weight !== null && productType.weight.value === option.value
-                    )
-                );
-
-                return newWeightOptions;
-            },
-
-            async dynamiclyCreateTableRow(controller) {
-                //define empty data
-                let data = {};
-
-                //for when product is selected so that function runs asynchronisly!
-                this.asyncFlow = true;
-
-                //define data first
-                switch (controller) {
-                    case 'User':
-                        //define data for User
-                        data = {
-                            //required fields:
-                            first_name: this.first_name,
-                            last_name: this.last_name,
-                            email: this.email,
-                            password: this.password,
-                            password_confirm: this.password_confirm,
-                            user_role_id: this.user_role_id.id, 
-
-                            //optional fields
-                            city: this.city || '',
-                            zipcode: this.zipcode || '',
-                            phone_number: this.phone_number || '',
-                            house_number: this.house_number || '',
-                            street_name: this.street_name || '',
-                        };
-                        this.asyncFlow = false;
-                        break;
-
-                    case 'Product':
-                        //define data for Product
-                        data = {
-                            product_name: this.product_name,
-                            product_image_name: this.productImageName,
-                            infobar_image_name: this.infobarImageName,
-                            roast_type: this.roast_type,
-                            origin: this.origin,
-                            product_types: JSON.stringify(this.product_types),
-                            translations: JSON.stringify(this.translations)
-                        };
-                        
+            //execute the crud action
+            async executeCrudAction() {
+                if (action == 'C') {
+                    if (controller == 'Product') {
                         //handle image upload
                         try {
                             const formData = new FormData();
@@ -793,7 +693,6 @@
                                         text: 'failed.to.upload.image.to.admin',
                                         icon: 'error',
                                     });
-
                                 }
                             }
                         } catch (error) {
@@ -802,109 +701,540 @@
                                 text: error.message,
                                 icon: 'error',
                             });
-                        }
-                        break;
-                        
-                    case 'ProductVariant':
-                        //define data for ProductVariant
-                        this.data = {
-
-                        };
-                        this.asyncFlow = false;
-                        break;
-
-                    case 'Role':
-                        //define data for ApiKey
-                        data = {
-                            name: this.role_name,
-                        };
-                        this.asyncFlow = false;
-                        break;
-                    
-                    case 'ApiKey':
-                        //define data for ApiKey
-                        data = {
-                            provider: this.provider,
-                            secret_key: this.secret_key,
-                            public_key: this.public_key
-                        }; 
-                        this.asyncFlow = false;
-                        break;
-
-                    case 'Message':
-                        //define data for Message
-                        data = {
-                            name: this.variable,
-                            language: this.selectedLanguage,
-                            message: this.message,
-                        };
-                        this.asyncFlow = false;
-                        break;
-
-                    default:
-                        throw new Error(`Controller "${controller}" is niet herkend.`);
-                }
-
-                if (data) {
-                    if (!this.asyncFlow) {
-                        //post payload to its controller
-                        this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
-                            if (res.status) {
-                                this.cancelCreateScreen();
-                                this.$emit('row-created', controller); //get the table again when succesfully inserted new row
-
-                            }
-
-                            //fire swall for erro or succes
-                            Swal.fire({
-                                title: res.status ? 'Succes!' : 'Error!',
-                                text: this.$t(res.message),
-                                icon: res.status ? 'success' : 'error',
-                            });
-    
-                        })
+                        }                        
                     }
+
+                    //post payload to its controller
+                    this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
+                        if (res.status) {
+                            this.cancleCrudHandlerScreen();
+                            this.$emit('row-created', controller); //get the table again when succesfully inserted new row
+                        }
+
+                        //fire swall for erro or succes
+                        Swal.fire({
+                            title: res.status ? 'Succes!' : 'Error!',
+                            text: this.$t(res.message),
+                            icon: res.status ? 'success' : 'error',
+                        });
+                    })
+
+                } else if (action == 'U') { //when action == UPDATE
+
+                }
+            },
+
+            //fill in correct Data for UPDATE or make 'data' for CREATE
+            adjustDataByController(action, controller) {
+                //when action == CREATE
+                if (action == 'C') {
+                    switch (controller) {
+                        case 'User':
+                            data = {
+                                //required fields:
+                                first_name: this.first_name,
+                                last_name: this.last_name,
+                                email: this.email,
+                                password: this.password,
+                                password_confirm: this.password_confirm,
+                                user_role_id: this.user_role_id.id, 
+
+                                //optional fields
+                                city: this.city || '',
+                                zipcode: this.zipcode || '',
+                                phone_number: this.phone_number || '',
+                                house_number: this.house_number || '',
+                                street_name: this.street_name || '',
+                            };
+                            break;
+
+                        case 'Product':
+                            //define data for Product
+                            data = {
+                                product_name: this.product_name,
+                                product_image_name: this.productImageName,
+                                infobar_image_name: this.infobarImageName,
+                                roast_type: this.roast_type,
+                                origin: this.origin,
+                                product_types: JSON.stringify(this.product_types),
+                                translations: JSON.stringify(this.translations)
+                            };
+                            break;
+                            
+                        case 'ProductVariant':
+                            //define data for ProductVariant
+                            this.data = {
+                                
+                            };
+                            break;
+
+                        case 'Role':
+                            //define data for Role
+                            data = {
+                                name: this.role_name,
+                            };
+                            this.asyncFlow = false;
+                            break;
+                        
+                        case 'ApiKey':
+                            //define data for ApiKey
+                            data = {
+                                provider: this.provider,
+                                secret_key: this.secret_key,
+                                public_key: this.public_key
+                            }; 
+                            break;
+
+                        case 'Message':
+                            //define data for Message
+                            data = {
+                                name: this.variable,
+                                language: this.selectedLanguage,
+                                message: this.message,
+                            };
+                            break;
+
+                        default:
+                            throw new Error(`Controller "${controller}" is niet herkend.`);
+                } else if (action == 'U') { //when action == UPDATE
+
+                }
+            },
+
+
+            //   FUNCTIONS FOR IMAGE HANDELING   //
+
+            //handle on file upload
+            onFileChange(event, typeFile, typeUrl, typeName) {
+                const file = event.target.files[0];
+                if (file) {
+                    //store the file in the productImageFile variable
+                    this[typeFile] = file;
+
+                    //generate a temporary URL for preview
+                    this[typeUrl] = URL.createObjectURL(file);
+                    //set name
+                    this[typeName] = file.name;
+                }
+            },
+
+            //open product image in fullscreen
+            productImageFullscreen(typeUrl) {
+                window.open(typeUrl, "_blank");
+            },
+
+            //remove added image
+            removeImage(typeFile, typeUrl) {
+                this[typeFile] = null;
+                this[typeUrl] = '';
+            },
+
+            //   FUNCTIONS FOR OPTIONS   //
+
+            //filter the weightOptions when one is chosen
+            filteredWeightOptions(index) {
+                let newWeightOptions = [...this.weightOptions];
+
+                // Filter out the weights from newWeightOptions that are present in product_types, where product_types[index].weight is not null
+                newWeightOptions = newWeightOptions.filter(option =>
+                    !this.product_types.some(productType =>
+                        productType.weight !== null && productType.weight.value === option.value
+                    )
+                );
+
+                return newWeightOptions;
+            },
+
+            //when one language is chosen, sync the other one
+            syncLanguages(selectedIndex) {
+                if(this.translations[selectedIndex].selectedLanguage ) {
+                    if (selectedIndex == 0) {
+                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
+                            this.translations[1].selectedLanguage = 'NL';
+                        } else {
+                            this.translations[1].selectedLanguage = 'EN';
+                        }
+                    } else {
+                        if (this.translations[selectedIndex].selectedLanguage == 'EN') {
+                            this.translations[0].selectedLanguage = 'NL';
+                        } else {
+                            this.translations[0].selectedLanguage = 'EN';
+                        }
+                    }
+                }
+            },
+
+            //   FUNCTIONS PRODUCT VARIANT   //
+
+            //add a product type fields
+            addProductTypeFields() {
+                if (this.productTypeIncrementField < 3) {
+                    this.productTypeIncrementField += 1;
                 } else {
-                    Swal.fire({ //error creating payload data
-                        title: 'Error!',
-                        text: this.$t('error.creating.payload'),
-                        icon: 'error',
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'You.can.only.have.3.types',
+                        icon: 'warning',
                     });
                 }
             },
-            
-            //getting role options 'now hardcodet to be posted into roleOptions -> rewrite this cuz also needed to get options for the product type weight'
-            dynamiclyGetOptions(controller) {
-                this.req('Get', '/' + controller + '/getOptions').then((res) => {
-                    if (res.status) {
-                        if (controller == 'Role') {
-                            res.data.forEach(role => {
-                                this.roleOptions.push(role);
-                            });
-                        }
 
-                    }
-                })
+            //remove a product type field based on its index
+            removeProductTypeField(index) {
+                if (this.productTypeIncrementField == 1) {
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'you.need.at.least.one.type',
+                        icon: 'warning',
+                    });
+                } else {
+                    this.productTypeIncrementField -= 1; // Decrease the count
+                }
             },
-
-            getProductVariants() {
-                this.req('Get', '/Product/getOptions').then((res) => {
-                    if (res.status) {
-                        this.productVariantOptions = res.data;
-                    }
-                })
-            }
-        },
-
-        mounted() {
-            if (this.modelValue == 'User') { //get Role options to create a User
-                this.dynamiclyGetOptions('Role');
-            }
-
-            if (this.modelValue == 'ProductVariant') {
-                 this.getProductVariants();
-            }
         }
+
+        // methods: {
+
+        //     //function to Set values either for updating values or creating a new row
+        //     async setfieldValues(controller, fieldvalues) {
+        //         //define empty data
+        //         let data = {};
+
+        //        if (controller == 'User') {
+        //             if (fieldvalues) { //UPDATE
+        //                 //set values
+        //                 this.first_name = fieldvalues.first_name || '';
+        //                 this.last_name = fieldvalues.last_name || '';
+        //                 this.email = fieldvalues.email || '';
+        //                 this.user_role_id = fieldvalues.user_role_id || '';
+        //                 this.city = fieldvalues.city || '';
+        //                 this.zipcode = fieldvalues.zipcode || '';
+        //                 this.house_number = fieldvalues.house_number || '';
+        //                 this.street_name = fieldvalues.street_name || '';
+
+        //                 //values are set, now clear fieldvalues
+        //                 this.fieldvalues = null; 
+        //             } else { //CREATE
+        //                 data = {
+        //                     //required fields:
+        //                     first_name: this.first_name,
+        //                     last_name: this.last_name,
+        //                     email: this.email,
+        //                     password: this.password,
+        //                     password_confirm: this.password_confirm,
+        //                     user_role_id: this.user_role_id.id, 
+
+        //                     //optional fields
+        //                     city: this.city || '',
+        //                     zipcode: this.zipcode || '',
+        //                     phone_number: this.phone_number || '',
+        //                     house_number: this.house_number || '',
+        //                     street_name: this.street_name || '',
+        //                 };
+        //             }
+        //         } else if (controller == 'Product') { //if controller is 
+        //             if (fieldvalues) { //UPDATE
+        //                 //set values
+        //                 this.product_name = fieldvalues.product_name || '';
+        //                 this.productImageName = fieldvalues.productImageName || '';
+        //                 this.roast_type = fieldvalues.roast_type || '';
+        //                 this.origin = fieldvalues.origin || '';
+        //                 this.product_types = fieldvalues.product_types || '';
+        //                 this.translations = fieldvalues.translations || '';
+
+        //                 //values are set, now clear fieldvalues
+        //                 this.fieldvalues == null
+        //             } else { //CREATE
+        //                 data = {
+        //                     product_name: this.product_name,
+        //                     product_image_name: this.productImageName,
+        //                     infobar_image_name: this.infobarImageName,
+        //                     roast_type: this.roast_type,
+        //                     origin: this.origin,
+        //                     product_types: JSON.stringify(this.product_types),
+        //                     translations: JSON.stringify(this.translations)
+        //                 };
+                        
+        //                 //handle image upload
+        //                 try {
+        //                     const formData = new FormData();
+        //                     formData.append('productImageFile', this.productImageFile);
+        //                     formData.append('infobarImageFile', this.infobarImageFile);
+
+        //                     //first request
+        //                     const resWebshop = await this.reqWebshop('POST', `/${controller}/saveImage`, formData);
+        //                     if (!resWebshop.status) {
+        //                         Swal.fire({
+        //                             title: 'Error!',
+        //                             text: 'failed.to.upload.image.to.webshop',
+        //                             icon: 'error',
+        //                         });
+        //                     } else {
+        //                         //second request
+        //                         const resAdmin = await this.req('POST', `/${controller}/saveImage`, formData);
+        //                         if (resAdmin.status) {
+        //                             this.asyncFlow = false;
+        //                         } else {
+        //                             Swal.fire({
+        //                                 title: 'Error!',
+        //                                 text: 'failed.to.upload.image.to.admin',
+        //                                 icon: 'error',
+        //                             });
+
+        //                         }
+        //                     }
+        //                 } catch (error) {
+        //                     Swal.fire({
+        //                         title: 'Error!',
+        //                         text: error.message,
+        //                         icon: 'error',
+        //                     });
+        //                 }
+        //             }
+        //         } else if (controller == 'ProductVariant') { //if controller is 
+                    
+        //         } else if (controller == 'Role') { 
+        //             if (fieldvalues) { //UPDATE
+        //                 //set values
+        //                 this.role_name = fieldvalues.name ? fieldvalues.name : '';
+
+        //                 //values are set, now clear fieldvalues
+        //                 this.fieldvalues == null
+        //             } else { //CREATE
+        //                 data = {
+        //                     name: this.role_name,
+        //                 };
+        //             }
+        //         } else if (controller == 'ApiKey') {
+        //             if (fieldvalues) { //UPDATE
+        //                 //set values
+        //                 this.provider = fieldvalues.first_name || '';
+        //                 this.secret_key = fieldvalues.last_name || '';
+        //                 this.public_key = fieldvalues.email || '';
+
+        //                 //values are set, now clear fieldvalues
+        //                 this.fieldvalues == null
+        //             } else { //CREATE
+        //                 data = {
+        //                     provider: this.provider,
+        //                     secret_key: this.secret_key,
+        //                     public_key: this.public_key
+        //                 };
+        //             }
+        //         } else if (controller == 'Message') { //if controller is 
+        //             if (fieldvalues) { //UPDATE
+        //                 //set values
+        //                 this.variable = fieldvalues.variable || '';
+        //                 this.selectedLanguage = fieldvalues.selectedLanguage || '';
+        //                 this.message = fieldvalues.message || '';
+
+        //                 //values are set, now clear fieldvalues
+        //                 this.fieldvalues == null
+        //             } else { //CREATE
+        //                 data = {
+        //                     name: this.variable,
+        //                     language: this.selectedLanguage,
+        //                     message: this.message,
+        //                 };
+        //             }
+        //         } else {
+        //             //fire swall for erro or succes
+        //             Swal.fire({
+        //                 title: 'Error!',
+        //                 text: controller + ' not found! contact Gene!',
+        //                 icon: 'error',
+        //             });
+        //         }
+        //     },
+
+        //     async dynamiclyCreateTableRow(controller) {
+        //         //define empty data
+        //         let data = {};
+
+        //         //for when product is selected so that function runs asynchronisly!
+        //         this.asyncFlow = true;
+
+        //         //define data first
+        //         switch (controller) {
+        //             case 'User':
+        //                 //define data for User
+        //                 data = {
+        //                     //required fields:
+        //                     first_name: this.first_name,
+        //                     last_name: this.last_name,
+        //                     email: this.email,
+        //                     password: this.password,
+        //                     password_confirm: this.password_confirm,
+        //                     user_role_id: this.user_role_id.id, 
+
+        //                     //optional fields
+        //                     city: this.city || '',
+        //                     zipcode: this.zipcode || '',
+        //                     phone_number: this.phone_number || '',
+        //                     house_number: this.house_number || '',
+        //                     street_name: this.street_name || '',
+        //                 };
+        //                 this.asyncFlow = false;
+        //                 break;
+
+        //             case 'Product':
+        //                 //define data for Product
+        //                 data = {
+        //                     product_name: this.product_name,
+        //                     product_image_name: this.productImageName,
+        //                     infobar_image_name: this.infobarImageName,
+        //                     roast_type: this.roast_type,
+        //                     origin: this.origin,
+        //                     product_types: JSON.stringify(this.product_types),
+        //                     translations: JSON.stringify(this.translations)
+        //                 };
+                        
+        //                 //handle image upload
+        //                 try {
+        //                     const formData = new FormData();
+        //                     formData.append('productImageFile', this.productImageFile);
+        //                     formData.append('infobarImageFile', this.infobarImageFile);
+
+        //                     //first request
+        //                     const resWebshop = await this.reqWebshop('POST', `/${controller}/saveImage`, formData);
+        //                     if (!resWebshop.status) {
+        //                         Swal.fire({
+        //                             title: 'Error!',
+        //                             text: 'failed.to.upload.image.to.webshop',
+        //                             icon: 'error',
+        //                         });
+        //                     } else {
+        //                         //second request
+        //                         const resAdmin = await this.req('POST', `/${controller}/saveImage`, formData);
+        //                         if (resAdmin.status) {
+        //                             this.asyncFlow = false;
+        //                         } else {
+        //                             Swal.fire({
+        //                                 title: 'Error!',
+        //                                 text: 'failed.to.upload.image.to.admin',
+        //                                 icon: 'error',
+        //                             });
+
+        //                         }
+        //                     }
+        //                 } catch (error) {
+        //                     Swal.fire({
+        //                         title: 'Error!',
+        //                         text: error.message,
+        //                         icon: 'error',
+        //                     });
+        //                 }
+        //                 break;
+                        
+        //             case 'ProductVariant':
+        //                 //define data for ProductVariant
+        //                 this.data = {
+
+        //                 };
+        //                 this.asyncFlow = false;
+        //                 break;
+
+        //             case 'Role':
+        //                 //define data for ApiKey
+        //                 data = {
+        //                     name: this.role_name,
+        //                 };
+        //                 this.asyncFlow = false;
+        //                 break;
+                    
+        //             case 'ApiKey':
+        //                 //define data for ApiKey
+        //                 data = {
+        //                     provider: this.provider,
+        //                     secret_key: this.secret_key,
+        //                     public_key: this.public_key
+        //                 }; 
+        //                 this.asyncFlow = false;
+        //                 break;
+
+        //             case 'Message':
+        //                 //define data for Message
+        //                 data = {
+        //                     name: this.variable,
+        //                     language: this.selectedLanguage,
+        //                     message: this.message,
+        //                 };
+        //                 this.asyncFlow = false;
+        //                 break;
+
+        //             default:
+        //                 throw new Error(`Controller "${controller}" is niet herkend.`);
+        //         }
+
+        //         if (data) {
+        //             if (!this.asyncFlow) {
+        //                 //post payload to its controller
+        //                 this.req('POST', '/' + controller + '/create' + controller, data).then((res) => {
+        //                     if (res.status) {
+        //                         this.cancleCrudHandlerScreen();
+        //                         this.$emit('row-created', controller); //get the table again when succesfully inserted new row
+        //                     }
+
+        //                     //fire swall for erro or succes
+        //                     Swal.fire({
+        //                         title: res.status ? 'Succes!' : 'Error!',
+        //                         text: this.$t(res.message),
+        //                         icon: res.status ? 'success' : 'error',
+        //                     });
+    
+        //                 })
+        //             }
+        //         } else {
+        //             Swal.fire({ //error creating payload data
+        //                 title: 'Error!',
+        //                 text: this.$t('error.creating.payload'),
+        //                 icon: 'error',
+        //             });
+        //         }
+        //     },
+            
+        //     //getting role options 'now hardcodet to be posted into roleOptions -> rewrite this cuz also needed to get options for the product type weight'
+        //     dynamiclyGetOptions(controller) {
+        //         this.req('Get', '/' + controller + '/getOptions').then((res) => {
+        //             if (res.status) {
+        //                 if (controller == 'Role') {
+        //                     res.data.forEach(role => {
+        //                         this.roleOptions.push(role);
+        //                     });
+        //                 }
+
+        //             }
+        //         })
+        //     },
+
+        //     getProductVariants() {
+        //         this.req('Get', '/Product/getOptions').then((res) => {
+        //             if (res.status) {
+        //                 this.productVariantOptions = res.data;
+        //             }
+        //         })
+        //     },
+        // },
+
+        // mounted() {
+        //     //if controler is user, get its role options
+        //     if (this.modelValue == 'User') {
+        //         this.dynamiclyGetOptions('Role');
+        //     }
+
+        //     //if controler is productVariant, get its options
+        //     if (this.modelValue == 'ProductVariant') {
+        //          this.getProductVariants();
+        //     }
+
+        //     //if this is defined then set the v-model values to the given updateValues
+        //     if (this.updateValues) {
+        //         this.action = 'UPDATE';
+        //         this.setfieldValues(this.updateValues.controller, this.updateValues);
+        //     } else {
+        //         this.action = 'CREATE';
+        //     }
+        // }
     }
 </script>
 <style scoped>

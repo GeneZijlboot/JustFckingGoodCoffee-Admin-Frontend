@@ -21,7 +21,7 @@
                     <div class="tab-content" id="nav-tabContent">
                         <!-- Users Table -->
                         <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', users[0].controller)">Create user</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', users[0].controller, null, null)">Create user</button>
                             <SearchBar :data="'user'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -30,6 +30,9 @@
                                             <th v-for="title in users_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -45,11 +48,15 @@
                                             <td>{{user.city}}</td>
                                             <td>{{user.zipcode}}</td>
                                             <td>{{user.subscription}}</td>
-                                            <td style="padding-right: 20px;">{{user.created_at}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', user.controller, user.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', user.controller, user.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', user.controller, user.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td>{{user.created_at}}</td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" data-bs-toggle="tooltip" title="delete.api.key" v-on:click="dynamicCrudAction('D', user.controller, null, user.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" data-bs-toggle="tooltip" title="update.api.key" v-on:click="dynamicCrudAction('U', user.controller, user, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -59,7 +66,7 @@
 
                         <!-- Products Table -->
                         <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', products[0].controller)">Create product</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', products[0].controller, null, null)">Create product</button>
                             <SearchBar :data="'product'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -68,6 +75,9 @@
                                             <th v-for="title in products_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -91,11 +101,15 @@
                                             <td >
                                                 <div class="scroll" v-html="$t(product.information)"></div>
                                             </td>
-                                            <td style="padding-right: 20px;">{{product.reviews}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', product.controller, product.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', product.controller, product.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', product.controller, product.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td>{{product.reviews}}</td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('D', product.controller, null, product.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('U', product.controller, product, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -105,7 +119,7 @@
 
                         <!-- Product Variants Table -->
                         <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-product-variants-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', productvariants[0].controller)">Create product variant</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', productvariants[0].controller, null, null)">Create product variant</button>
                             <SearchBar :data="'productvariant'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -114,6 +128,9 @@
                                             <th v-for="title in productvariants_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -121,11 +138,15 @@
                                             <td>{{productvariants.id}}</td>
                                             <td>{{productvariants.product_id}} - {{productvariants.product_name}}</td>
                                             <td>{{productvariants.weight}} gram</td>
-                                            <td style="padding-right: 20px;">€{{productvariants.price}},-</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', productvariants.controller, productvariants.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', productvariants.controller, productvariants.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', productvariants.controller, productvariants.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td>€{{productvariants.price}},-</td>
+                                            <td class="crud-icon">
+                                                 <svg class="icon" v-on:click="dynamicCrudAction('D', productvariants.controller, null, productvariants.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('U', productvariants.controller, productvariants, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="xborder-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -135,7 +156,7 @@
 
                         <!-- Roles Table -->
                         <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', roles[0].controller)">Create role</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', roles[0].controller, null, null)">Create role</button>
                             <SearchBar :data="'role'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -144,16 +165,23 @@
                                             <th v-for="title in roles_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="role in roles">
                                             <td>{{role.id}}</td>
-                                            <td style="padding-right: 20px;">{{role.name}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', role.controller, role.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', role.controller, role.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', role.controller, role.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td>{{role.name}}</td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('D', role.controller, null, role.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                               <svg class="icon" v-on:click="dynamicCrudAction('U', role.controller, role, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -163,7 +191,7 @@
 
                         <!-- Api Keys Table -->
                         <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-api-keys-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', apikeys[0].controller)">Create api key</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', apikeys[0].controller, null, null)">Create api key</button>
                             <SearchBar :data="'apikey'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -172,6 +200,9 @@
                                             <th v-for="title in apikeys_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -180,10 +211,14 @@
                                             <td>{{apikey.provider}}</td>
                                             <td>{{apikey.public_key}}</td>
                                             <td style="padding-right: 20px;">{{apikey.secret_key}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', apikey.controller, apikey.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', apikey.controller, apikey.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', apikey.controller, apikey.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('D', apikey.controller, null, apikey.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('U', apikey.controller, apikey, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -193,7 +228,7 @@
 
                         <!-- Message Table -->
                         <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-messages-tab">
-                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller)">Create messages</button>
+                            <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller, null, null)">Create messages</button>
                             <SearchBar :data="'message'" @search-result="handleSearchResult" @remove-search="removeSearchParam"/>
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
@@ -202,6 +237,9 @@
                                             <th v-for="title in messages_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -210,10 +248,14 @@
                                             <td>{{message.language}}</td>
                                             <td>{{message.name}}</td>
                                             <td>{{message.message}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', message.controller, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('D', message.controller, null, message.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" v-on:click="dynamicCrudAction('U', message.controller, message, null)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -230,6 +272,9 @@
                                             <th v-for="title in carts_header">
                                                 {{ title }}
                                             </th>
+                                            <!-- 3 empty th for delete, update and read -->
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -238,11 +283,15 @@
                                             <td>{{cart.cart_user}}</td>
                                             <td>{{cart.cart_product}}</td>
                                             <td>{{cart.variant_id}}</td>
-                                            <td style="padding-right: 20px;">{{cart.quantity}}</td>
-                                            <td class="px-4" style="border-left: 1px solid lightgray;">
-                                                <svg class="icon" v-on:click="dynamicCrudAction('R', cart.controller, cart.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
-                                                <svg class="icon mx-4" v-on:click="dynamicCrudAction('U', cart.controller, cart.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
-                                                <svg class="icon" v-on:click="dynamicCrudAction('D', cart.controller, cart.id)" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            <td>{{cart.quantity}}</td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+                                            </td>
+                                            <td class="crud-icon" style="border-right: 1px solid lightgray;">
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#black"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -253,19 +302,19 @@
                 </div>
             </div>
         </div>
-        <CreateComponent v-if="showPage" v-model="showPage" @cancel="handleCancel" @row-created="handleRowCreated"/>
+        <CrudHandler v-if="showPage" v-model="showPage" :updateValues="updateValues" @cancel="handleCancel" @row-created="handleRowCreated"/>
     </div>
 </template>
 <script>
     import Taskbar from './Taskbar.vue';
-    import CreateComponent from './CreateComponent.vue';
+    import CrudHandler from './CrudHandler.vue';
     import SearchBar from './SearchBar.vue';
     import Swal from 'sweetalert2';
     
     export default {
         components: {
             Taskbar,
-            CreateComponent,
+            CrudHandler,
             SearchBar
         },
 
@@ -313,6 +362,9 @@
                     'ApiKey',
                     'Message'
                 ],
+
+                //when user clicks on 'update' -> send that data through and display
+                updateValues: null,
             }
         },
 
@@ -338,18 +390,17 @@
             },
 
             //user table crud CrudActions
-            dynamicCrudAction(action, controller, id) {
+            dynamicCrudAction(action, controller, updateData, id) {
                 const data = {
                     id: id
                 }
-                
                 if (action == 'C') { //create
                     this.showPage = controller; //show the correct page for creating a table row
                     this.showDatabase = false; //hide the datbase component
-
-                } else if(action == 'R'){ //read
-
                 } else if (action == 'U') { //update
+                    this.updateValues = updateData; //set data equal to updateValues
+                    this.showPage = controller; //show the correct page for creating a table row
+                    this.showDatabase = false; //hide the datbase component
 
                 } else if (action == 'D') { //delete
                     Swal.fire({
@@ -396,7 +447,6 @@
             },
 
             handleSearchResult(resultData) {
-                console.log(resultData);
                 //set new data by search
                 this[resultData.controller.toLowerCase() + 's'] = resultData.data.search_param;
             },
@@ -432,13 +482,19 @@
         min-width: 180px;
     }
     
-
     .scroll {
         max-height: 125px; /* Limit the height */
         overflow-y: auto; /* Enable vertical scrolling */
         overflow-x: hidden; /* Prevent horizontal scrolling */
         scrollbar-width: thin; /* For Firefox */
         scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb and track color */
-}
+    }
+
+    .crud-icon {
+        text-align: center;
+        min-width: 42px;
+        max-width: 42px;
+        border-left: 1px solid lightgray;
+    }
 
 </style>
