@@ -1,26 +1,27 @@
 <template>
-<div class="d-flex vh-100 bg-light">
-        <!-- Taskbar Section -->
-        <Taskbar />
-        <!-- Main Content Section -->
-        <div v-if="showDatabase" class="table-container p-5 d-flex flex-column gap-5">
+    <div class="row m-0">
+        <div class="col-md-2 p-0">
+            <Taskbar />
+        </div>
+        <div class="col-md-10 p-0">
+            <div v-if="showDatabase" class="table-container p-3 d-flex flex-column gap-5">
             <div class="d-flex justify-content-center">
                 <div class="col-md-12">
                     <nav>
                         <div class="nav nav-tabs d-flex column-gap-4" id="nav-tab" role="tablist">
-                            <button class="nav-link active fs-5" id="nav-users-tab" data-bs-toggle="tab" data-bs-target="#nav-users" type="button" role="tab" aria-controls="nav-users" aria-selected="false">Users</button>
-                            <button class="nav-link fs-5" id="nav-products-tab" data-bs-toggle="tab" data-bs-target="#nav-products" role="tab" aria-controls="nav-products" aria-selected="true">Products</button>
-                            <button class="nav-link fs-5" id="nav-product-variants-tab" data-bs-toggle="tab" data-bs-target="#nav-product-variants" type="button" role="tab" aria-controls="nav-product-variants" aria-selected="false">Product Variants</button>
-                            <button class="nav-link fs-5" id="nav-roles-tab" data-bs-toggle="tab" data-bs-target="#nav-roles" type="button" role="tab" aria-controls="nav-roles" aria-selected="false">Roles</button>
-                            <button class="nav-link fs-5" id="nav-api-keys-tab" data-bs-toggle="tab" data-bs-target="#nav-api-keys" type="button" role="tab" aria-controls="nav-api-keys" aria-selected="false">Api Keys</button>
-                            <button class="nav-link fs-5" id="nav-messages-tab" data-bs-toggle="tab" data-bs-target="#nav-messages" type="button" role="tab" aria-controls="nav-messages" aria-selected="false">Messages</button>
-                            <button class="nav-link fs-5" id="nav-carts-tab" data-bs-toggle="tab" data-bs-target="#nav-carts" type="button" role="tab" aria-controls="nav-carts" aria-selected="false">Carts</button>
+                            <button class="nav-link active fs-5" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-users" type="button" role="tab" aria-controls="nav-users" aria-selected="false">Users</button>
+                            <button class="nav-link fs-5" id="nav-product-tab" data-bs-toggle="tab" data-bs-target="#nav-products" role="tab" aria-controls="nav-products" aria-selected="true">Products</button>
+                            <button class="nav-link fs-5" id="nav-productvariant-tab" data-bs-toggle="tab" data-bs-target="#nav-product-variants" type="button" role="tab" aria-controls="nav-product-variants" aria-selected="false">Product Variants</button>
+                            <button class="nav-link fs-5" id="nav-role-tab" data-bs-toggle="tab" data-bs-target="#nav-roles" type="button" role="tab" aria-controls="nav-roles" aria-selected="false">Roles</button>
+                            <button class="nav-link fs-5" id="nav-apikey-tab" data-bs-toggle="tab" data-bs-target="#nav-api-keys" type="button" role="tab" aria-controls="nav-api-keys" aria-selected="false">Api Keys</button>
+                            <button class="nav-link fs-5" id="nav-message-tab" data-bs-toggle="tab" data-bs-target="#nav-messages" type="button" role="tab" aria-controls="nav-messages" aria-selected="false">Messages</button>
+                            <button class="nav-link fs-5" id="nav-cart-tab" data-bs-toggle="tab" data-bs-target="#nav-carts" type="button" role="tab" aria-controls="nav-carts" aria-selected="false">Carts</button>
                         </div>
                     </nav>
 
                     <div class="tab-content" id="nav-tabContent">
                         <!-- Users Table -->
-                        <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
+                        <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-user-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', users[0].controller, null, null)">Create user</button>
                             
                             <div class="d-flex gap-3 align-items-center">
@@ -72,7 +73,7 @@
                         </div>
 
                         <!-- Products Table -->
-                        <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab">
+                        <div class="tab-pane fade" id="nav-products" role="tabpanel" aria-labelledby="nav-product-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', products[0].controller, null, null)">Create product</button>
                             <div class="d-flex gap-3 align-items-center">
                                 <SearchBar :data="'product'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
@@ -131,7 +132,7 @@
                         </div>
 
                         <!-- Product Variants Table -->
-                        <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-product-variants-tab">
+                        <div class="tab-pane fade" id="nav-product-variants" role="tabpanel" aria-labelledby="nav-productvariant-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', productvariants[0].controller, null, null)">Create product variant</button>
                             <div class="d-flex gap-3 align-items-center">
                                 <SearchBar :data="'productvariant'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
@@ -174,7 +175,7 @@
                         </div>
 
                         <!-- Roles Table -->
-                        <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-roles-tab">
+                        <div class="tab-pane fade" id="nav-roles" role="tabpanel" aria-labelledby="nav-role-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', roles[0].controller, null, null)">Create role</button>
                             <div class="d-flex gap-3 align-items-center">
                                 <SearchBar :data="'role'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
@@ -215,7 +216,7 @@
                         </div>
 
                         <!-- Api Keys Table -->
-                        <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-api-keys-tab">
+                        <div class="tab-pane fade" id="nav-api-keys" role="tabpanel" aria-labelledby="nav-apikey-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', apikeys[0].controller, null, null)">Create api key</button>
                             <div class="d-flex gap-3 align-items-center">
                                 <SearchBar :data="'apikey'" @search-result="handleSearchResult" @remove-search="removeSearchParam" />
@@ -258,7 +259,7 @@
                         </div>
 
                         <!-- Message Table -->
-                        <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-messages-tab">
+                        <div class="tab-pane fade" id="nav-messages" role="tabpanel" aria-labelledby="nav-message-tab">
                             <button type="button" class="btn btn-primary my-3" v-on:click="dynamicCrudAction('C', messages[0].controller, null, null)">Create messages</button>
                             <div class="d-flex gap-3 align-items-center">
                                 <SearchBar :data="'message'" @search-result="handleSearchResult" @remove-search="removeSearchParam"/>
@@ -301,7 +302,7 @@
                         </div>
 
                         <!-- Carts Table -->
-                        <div class="tab-pane fade d-flex" id="nav-carts" role="tabpanel" aria-labelledby="nav-carts-tab">
+                        <div class="tab-pane fade d-flex" id="nav-carts" role="tabpanel" aria-labelledby="nav-cart-tab">
                             <div class="table-responsive">
                                 <table class="w-100 table table-striped">
                                     <thead class="thead-dark">
@@ -355,6 +356,7 @@
             </div>
         </div>
         <CrudHandler v-if="showPage" v-model="showPage" :updateValues="updateValues" @cancel="handleCancel" @row-created="handleRowCreated"/>
+        </div>
     </div>
 </template>
 <script>
@@ -487,8 +489,29 @@
 
             //cancle create page         
             handleCancel() {
-                this.showDatabase = true; // Show the database again
-                this.showPage = false; // Hide the create component
+                //unset this.productValues so 'update' is not used again
+                this.updateValues = null;
+
+                const tabId = 'nav-' + this.showPage.toLowerCase() + '-tab'; // Construct tab ID dynamically
+                const targetTab = document.getElementById(tabId); // Get the tab element by ID
+    
+                if (targetTab) {
+                    console.log('Tab found:', tabId);
+                    targetTab.click(); // Simulate a click event to activate the tab
+                } else {
+                    console.error('Tab with ID ' + tabId + ' not found.');
+                }
+                
+                // Show the database again
+                this.showDatabase = true;
+
+                
+                // Hide the create component
+                this.showPage = false;
+
+
+                //remove class active from all class -> tab-pane, put class active on
+
             },
             
             handleRowCreated(controller) {
@@ -533,7 +556,40 @@
 
                     case 'Product':
                         this.helpModalTitle = 'Product Table';
-                        this.helpModalSubtitle = 'product test description';
+                        this.helpModalSubtitle = `
+                        <section>
+                            <p>This section allows you to create a new product or edit/delete an existing one.<br /><br />
+                            When creating a new product, keep in mind that you are also generating translations for both English and Dutch, as well as assigning product types. Both translations and product types are added to their respective tables.<br />
+                            For a product to be displayed in the shop, it must have at least one product type assigned.<br /><br />Lastly the search-bar allows you to search for a specific product.</p>
+                            <h4 style="border-top: 1px solid lightgray; padding-top: 1rem;"><strong>Technical:</strong></h4>
+                            <p><strong>Creating a product:</strong></p>
+                            <ol>
+                                <li>First, the product is inserted into the product table.</li>
+                                <li>Next, its associated product variants are added to the product variants table.</li>
+                                <li>Then, the translations for both English and Dutch are stored in the translations table.</li>
+                                <li>Finally, the image handling process takes place:  
+                                    <ul>
+                                        <li>If the image does not already exist in the directory, it is uploaded and stored.</li>
+                                        <li>If the image is already present in the directory, it is not uploaded again to save memory, as only one copy of each image is stored.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+
+                            <p><strong>Deleting a product:</strong></p>
+                            <ol>
+                                <li>First, the selected product is deleted from the product table.</li>
+                                <li>Next, its associated product variants are removed from the product variants table.</li>
+                                <li>Finally, the images column in the product table is checked to see if any other products share the same image file path as the product being deleted.  
+                                    <ul>
+                                        <li>If other products use the same image file path, the image is not deleted.</li>
+                                        <li>If no other products share that image file path, meaning only the deleted product was using it, then it is safe to remove the image.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </section>
+                    `;
+
+
                         break;
                         
                     case 'ProductVariant':
@@ -543,17 +599,35 @@
 
                     case 'Role':
                         this.helpModalTitle = 'Role Table';
-                        this.helpModalSubtitle = 'role test description';
+                        this.helpModalSubtitle = `
+                            <section>
+                                <p>This section allows you to create a new role or edit/delete an existing one.<br /><br />
+                                <strong class="text-danger">Serious Warning:</strong> Deleting the <strong>admin</strong> role breaks the entire backend system, as it is designed to function based on user - permissions. For example, a user with customer permissions would never be able to access the backend.</p>
+                                <p>However, editing roles is completely safe. You can even rename the admin role without issues, as the system operates based on the <code>id - #</code> field.</p>
+                            </section>
+                        `;
                         break;
                     
                     case 'ApiKey':
                         this.helpModalTitle = 'ApiKey Table';
-                        this.helpModalSubtitle = 'apikey test description';
+                        this.helpModalSubtitle = `
+                            <section>
+                                <p>This section allows you to create a new API Key or edit/delete an existing one.<br /><br />
+                                <strong class="text-danger">Warning:</strong> Be careful when deleting or editing an existing API Key, as it may cause disruptions in the webshop. Ensure that any necessary updates are made before making changes.</p>
+                            </section>
+                        `;
                         break;
 
                     case 'Message':
                         this.helpModalTitle = 'Message Table';
-                        this.helpModalSubtitle = 'message test description';
+                        this.helpModalSubtitle = `
+                            <section>
+                                <p>This section allows you to create a new message or edit/delete an existing one.<br /><br />
+                                When creating a new message, the variable field serves as the connection between the database entry and its designated translation.  
+                                For example, the variable <code>product_details.total</code> would correspond to the translation <strong>EN: "Total"</strong> or <strong>NL: "Totaal"</strong><br /><br />
+                                If a message is not set for a specific variable, the variable itself will be displayed instead.</p>
+                            </section>
+                        `;
                         break;
 
                     default:
@@ -570,6 +644,7 @@
 
         //loop through controllers and get its data table
         mounted() {
+            console.log(document.querySelector('#nav-message-tab'));
             this.controllers.forEach(controller => {
                 this.dynamiclyGetTable(controller);
             });

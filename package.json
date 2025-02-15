@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "bootstrap": "^5.3.3",
     "sweetalert2": "^11.15.3",
+    "tinymce": "^7.6.1",
     "vue": "^3.5.10",
+    "vue-gtag": "^2.1.0",
     "vue-i18n": "^10.0.4",
     "vue-multiselect": "^3.1.0",
     "vue-router": "^4.4.5"

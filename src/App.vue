@@ -23,14 +23,14 @@ export default {
           break;
         case '/page/account':
         case '/page/database':
-        // case '/page/analytics':
+        case '/page/google-analytics':
         // case '/page/mollie':
         // case '/page/sendcloud':
         // case '/page/moneybird':
         // case '/page/settings':
         case '/page/dashboard':
         case (route.path.startsWith('/page/product/') ? route.path : null):
-          backgroundColor = 'rgba(237, 232, 225, 1)'; // Blue for logged-in routes
+          backgroundColor = 'white'; // Blue for logged-in routes
           localStorage.setItem('textColor', 'rgba(45,57,42,1)'); // -- rgb(49, 76, 56)
           break;
         default:

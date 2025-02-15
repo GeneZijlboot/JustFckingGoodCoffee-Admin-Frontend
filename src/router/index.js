@@ -6,7 +6,7 @@ import App from '../App.vue';
 import Login from '../components/Login.vue';
 import Dashboard from '../components/Dashboard.vue';
 import Database from '../components/Database.vue';
-// import Analytics from '../components/Analytics.vue';
+import GoogleAnalytics from '../components/GoogleAnalytics.vue';
 // import Mollie from '../components/Mollie.vue';
 // import Sendcloud from '../components/Sendcloud.vue';
 // import Moneybird from '../components/Moneybird.vue';
@@ -35,11 +35,11 @@ const router = createRouter({
       name: 'Database',
       component: Database,
     },
-    // {
-    //   path: '/page/analytics',
-    //   name: 'Analytics',
-    //   component: Analytics,
-    // },
+    {
+      path: '/page/google-analytics',
+      name: 'GoogleAnalytics',
+      component: GoogleAnalytics,
+    },
     // {
     //   path: '/page/mollie',
     //   name: 'Mollie',
@@ -70,7 +70,6 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('currentUser') === "true"; // Convert string to boolean
-
   if (!isAuthenticated && !['/page/login', '/page/forgot_password', '/page/reset_password'].includes(to.path)) {
     if (to.path !== '/page/login') { // Prevent redundant redirects
       next('/page/login');

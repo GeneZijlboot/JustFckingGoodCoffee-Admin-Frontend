@@ -9,6 +9,8 @@ import '../src/styles/App.scss';
 import router from './router/index';
 import App from './App.vue';
 
+import VueGtag from 'vue-gtag';
+
 import { functions } from './mixins/functions.js';
 
 import { createApp } from 'vue';
@@ -33,8 +35,7 @@ const i18n = createI18n({
     messages,
     reloadOnLanguageChange: false,
     globalInjection: true,
-    escapeParameterHtml: false,  // Disable escaping
-    
+    warnHtmlInMessage: false,
 });
 
 //create the app instance
@@ -58,5 +59,9 @@ functions.methods.req('GET', '/user/getsession').then((res) => {
 //add the mixin
 app.mixin(functions);
 
+app.use(VueGtag, {
+    config: { id: "G-KEFEF5MHNM" },
+  }, router); // This ensures automatic tracking on route changes
+  
 //use router and i18n
 app.use(router).use(i18n).mount('#app');

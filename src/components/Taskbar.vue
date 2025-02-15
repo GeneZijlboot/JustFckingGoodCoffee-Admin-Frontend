@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white d-flex flex-column" style="height: 100vh;">
+    <div class="bg-white d-flex flex-column" style="height: 100vh; box-shadow: 1px 0 8px rgba(0, 0, 0, 0.2);">
         <!-- Logo -->
         <div class="d-flex justify-content-center">
             <img class="logo" src="../assets/images/logo_images/logo_dark.png" alt="Logo" />
@@ -20,7 +20,7 @@
         <div>
             <SwitchLanguageButton />
             <div class="d-flex justify-content-center"><div class="devider"></div></div>
-            <div v-for="(item, index) in taskbar.slice(-2)" :key="taskbar.length + index" class="d-flex align-items-center column-gap-3 p-3 menu-item spacing" style="cursor: pointer;" v-on:click="changeRoute(item.route)">
+            <div v-for="(item, index) in taskbar.slice(-2)" :key="taskbar.length + index" class="d-flex align-items-center column-gap-3 p-3 menu-item spacing" :class="{ 'mb-3': index === taskbar.slice(-2).length - 1 }" style="cursor: pointer;" v-on:click="changeRoute(item.route)">
                 <span v-html="item.icon"></span>
                 <span v-if="item.text" class="item_text">{{ item.text }}</span>
             </div>
@@ -50,11 +50,11 @@
                         text: 'Database',
                         route: 'database',
                     },
-                    // {
-                    //     icon: '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="black" class="bi bi-graph-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/></svg>',
-                    //     text: 'Analytics',
-                    //     route: 'analytics',
-                    // },
+                    {
+                        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="black" class="bi bi-graph-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/></svg>',
+                        text: 'Google Analytics',
+                        route: 'google-analytics',
+                    },
                     // {
                     //     icon: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M480-40q-112 0-206-51T120-227v107H40v-240h240v80h-99q48 72 126.5 116T480-120q75 0 140.5-28.5t114-77q48.5-48.5 77-114T840-480h80q0 91-34.5 171T791-169q-60 60-140 94.5T480-40Zm-36-160v-52q-47-11-76.5-40.5T324-370l66-26q12 41 37.5 61.5T486-314q33 0 56.5-15.5T566-378q0-29-24.5-47T454-466q-59-21-86.5-50T340-592q0-41 28.5-74.5T446-710v-50h70v50q36 3 65.5 29t40.5 61l-64 26q-8-23-26-38.5T482-648q-35 0-53.5 15T410-592q0 26 23 41t83 35q72 26 96 61t24 77q0 29-10 51t-26.5 37.5Q583-274 561-264.5T514-250v50h-70ZM40-480q0-91 34.5-171T169-791q60-60 140-94.5T480-920q112 0 206 51t154 136v-107h80v240H680v-80h99q-48-72-126.5-116T480-840q-75 0-140.5 28.5t-114 77q-48.5 48.5-77 114T120-480H40Z"/></svg>',
                     //     text: 'Mollie',

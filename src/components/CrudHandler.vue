@@ -292,16 +292,15 @@
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <label :for="'description_' + index" class="form-label">Description*</label>
-                                            <div class="form-floating">
-                                                <textarea 
-                                                    class="form-control" 
-                                                    :id="'description_' + index" 
-                                                    placeholder="Leave a comment here" 
-                                                    style="height: 100px" 
-                                                    v-model="translation.description" 
-                                                    required>
-                                                </textarea>
-                                            </div>
+                                            <Editor
+                                                v-if="API_TinyMce"
+                                                :api-key="API_TinyMce"
+                                                :init="{
+                                                    plugins: 'lists link image table code help wordcount'
+                                                }"
+                                                v-model="translation.description" 
+                                                required
+                                            />
                                         </div>
                                     </div>
 
@@ -309,16 +308,15 @@
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <label :for="'data_' + index" class="form-label">Data*</label>
-                                            <div class="form-floating">
-                                                <textarea 
-                                                    class="form-control" 
-                                                    :id="'data_' + index" 
-                                                    placeholder="Leave a comment here" 
-                                                    style="height: 100px" 
-                                                    v-model="translation.data" 
-                                                    required>
-                                                </textarea>
-                                            </div>
+                                            <Editor
+                                                v-if="API_TinyMce"
+                                                :api-key="API_TinyMce"
+                                                :init="{
+                                                    plugins: 'lists link image table code help wordcount'
+                                                }"
+                                                v-model="translation.data"
+                                                required
+                                            />
                                         </div>
                                     </div>
 
@@ -326,16 +324,15 @@
                                     <div class="row mb-4">
                                         <div class="col-md-12">
                                             <label :for="'information_' + index" class="form-label">Information*</label>
-                                            <div class="form-floating">
-                                                <textarea 
-                                                    class="form-control" 
-                                                    :id="'information_' + index" 
-                                                    placeholder="Leave a comment here" 
-                                                    style="height: 100px" 
-                                                    v-model="translation.information" 
-                                                    required>
-                                                </textarea>
-                                            </div>
+                                            <Editor
+                                                v-if="API_TinyMce"
+                                                :api-key="API_TinyMce"
+                                                :init="{
+                                                    plugins: 'lists link image table code help wordcount'
+                                                }"
+                                                v-model="translation.information" 
+                                                required
+                                            />
                                         </div>
                                     </div>
                                     <div class="devider-translations"></div>
@@ -513,9 +510,15 @@
                     <div class="row mb-4">
                         <div class="col-md-12">
                         <label for="provider" class="form-label">Message*</label>
-                        <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px" v-model="message" required></textarea>
-                            </div>
+                            <Editor
+                                v-if="API_TinyMce"
+                                :api-key="API_TinyMce"
+                                :init="{
+                                    plugins: 'lists link image table code help wordcount'
+                                }"
+                                v-model="message"
+                                required
+                            />
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -549,11 +552,13 @@
     import Multiselect from 'vue-multiselect';
     import 'vue-multiselect/dist/vue-multiselect.min.css';
     import Swal from 'sweetalert2';
+    import Editor from '@tinymce/tinymce-vue'
     
     export default {
         components: {
             Taskbar,
-            Multiselect
+            Multiselect,
+            Editor
         },
  
         props: {
@@ -647,6 +652,7 @@
                 message: null,
 
                 asyncFlow: null,
+                API_TinyMce: null,
             }
         },
 
@@ -873,9 +879,9 @@
                         //post payload to its controller
                         this.req('POST', '/' + controller + '/' + action + controller, data).then((res) => {
                             if (res.status) {
+                                //press cancle -> to be redirected to view the database again
                                 this.cancelCreateScreen();
                                 this.$emit('row-created', controller); //get the table again when succesfully inserted new row
-
                             }
 
                             //fire swall for erro or succes
@@ -904,12 +910,9 @@
                             res.data.forEach(role => {
                                 this.roleOptions.push(role);
                             });
-                        }
-
-                        //when user pressed update then preset the roleoption when updateing a user
-                        if (this.updateValues && this.updateValues.user_role_id) {
-                            console.log(this.roleOptions);
-                            this.user_role_id = this.roleOptions.find(role => role.id === this.updateValues.user_role_id);
+                            if (this.updateValues && this.updateValues.id) {
+                                this.user_role_id = this.roleOptions.find(role => role.id === this.updateValues.user_role_id);
+                            }
                         }
                     }
                 })
@@ -1025,8 +1028,17 @@
 
             //pressed on UPDATE -> set fields values
             if (this.updateValues) {
-                console.log(this.updateValues);
+                // console.log(this.updateValues);
                 this.setUpdateFieldValues(this.modelValue, this.updateValues);
+            }
+
+            if (this.modelValue == 'Product' || this.modelValue == 'Message') {
+                //getting the api key tinymce
+                this.req('GET', '/ApiKey/getTinyMCEKey').then((res) => {
+                    if (res.status) {
+                        this.API_TinyMce = res.data.api_key;
+                    }
+                })
             }
         }
     }
