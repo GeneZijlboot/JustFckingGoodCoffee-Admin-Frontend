@@ -25,7 +25,7 @@ export default {
         case '/page/database':
         case '/page/google-analytics':
         // case '/page/mollie':
-        // case '/page/sendcloud':
+        case '/page/sendcloud':
         // case '/page/moneybird':
         // case '/page/settings':
         case '/page/dashboard':

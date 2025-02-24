@@ -8,7 +8,7 @@ import Dashboard from '../components/Dashboard.vue';
 import Database from '../components/Database.vue';
 import GoogleAnalytics from '../components/GoogleAnalytics.vue';
 // import Mollie from '../components/Mollie.vue';
-// import Sendcloud from '../components/Sendcloud.vue';
+import Sendcloud from '../components/Sendcloud.vue';
 // import Moneybird from '../components/Moneybird.vue';
 import Account from '../components/Account.vue';
 // import Settings from '../components/Settings.vue';
@@ -45,11 +45,11 @@ const router = createRouter({
     //   name: 'Mollie',
     //   component: Mollie,
     // },
-    // {
-    //   path: '/page/sendcloud',
-    //   name: 'Sendcloud',
-    //   component: Sendcloud,
-    // },
+    {
+      path: '/page/sendcloud',
+      name: 'Sendcloud',
+      component: Sendcloud,
+    },
     // {
     //   path: '/page/moneybird',
     //   name: 'Moneybird',

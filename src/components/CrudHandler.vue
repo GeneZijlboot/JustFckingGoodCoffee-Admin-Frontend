@@ -467,8 +467,16 @@
                     <div class="row my-4">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="provider" class="form-label">provider*</label>
+                                <label for="provider" class="form-label">Provider*</label>
                                 <input type="text" class="p-2 form-control" id="provider" placeholder="Enter provider name" v-model="provider" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row my-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="provider" class="form-label">Integration id</label>
+                                <input type="text" class="p-2 form-control" id="provider" placeholder="Enter integration id" v-model="integration_id" required />
                             </div>
                         </div>
                     </div>
@@ -644,6 +652,7 @@
                 provider: null,
                 public_key: null,
                 secret_key: null, 
+                integration_id: null,
 
                 //MESSAGES
                 selectedLanguage: null,
@@ -699,8 +708,9 @@
                     case 'ApiKey':
                         //define values for ApiKey
                         updateValue.provider ? this.provider = updateValue.provider : this.provider = '';
-                        updateValue.public_key ? this.public_key = updateValue.public_key : this.public_key = ''; 
-                        updateValue.secret_key ? this.secret_key = updateValue.secret_key : this.secret_key = ''; 
+                        updateValue.public_key ? this.public_key = updateValue.public_key : this.public_key = '';
+                        updateValue.secret_key ? this.secret_key = updateValue.secret_key : this.secret_key = '';
+                        updateValue.integration_id ? this.integration_id = updateValue.integration_id : this.integration_id = '';
                         break;
 
                     case 'Message':
@@ -843,7 +853,8 @@
                         data = {
                             provider: this.provider,
                             secret_key: this.secret_key,
-                            public_key: this.public_key
+                            public_key: this.public_key,
+                            integration_id: this.integration_id
                         }; 
 
                         // If this.updateValue exists and has an id, add it to data

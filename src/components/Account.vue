@@ -1,11 +1,12 @@
 <template>
-  <div class="row m-0">
-    <div class="col-md-1 p-0">
+    <div class="d-flex" style="height: 100vh;">
+      <!-- Sidebar -->
       <Taskbar />
-    </div>
-    <div class="col-md-11 p-0 vh-100 d-flex align-items-center justify-content-center">
-      <h3>Account</h3>
-    </div>
+      
+      <!-- Main Dashboard Area -->
+      <div class="flex-grow-1 d-flex justify-content-center align-items-center">
+        <h1>Account</h1>
+      </div>
   </div>
 </template>
 

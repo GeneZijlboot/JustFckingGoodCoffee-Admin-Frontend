@@ -1,9 +1,10 @@
 <template>
-    <div class="row m-0">
-        <div class="col-md-2 p-0">
-            <Taskbar />
-        </div>
-        <div class="col-md-10 p-0 vh-100 d-flex align-items-center justify-content-center">
+    <div class="d-flex" style="height: 100vh;">
+        <!-- Sidebar -->
+        <Taskbar />
+        
+        <!-- Main Dashboard Area -->
+        <div class="flex-grow-1 d-flex justify-content-center align-items-center text-center">
             <h3>Analytics</h3>
         </div>
     </div>
